@@ -3,8 +3,6 @@ import { Link } from 'expo-router';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import colors from '../constants/Colors';
 
-
-
 export default function TestScreen() {
   return (
     <ImageBackground>
@@ -45,7 +43,11 @@ export default function TestScreen() {
       
       <View>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Log In</Text>
+          <Text style={styles.buttonText}>{' '}
+            <Link href="/HomeScreen" style={{ color: colors.white }}>
+            LogIn
+            </Link>
+          </Text>
         </TouchableOpacity>
         <Image source={require('../assets/images/right-arrow-icon.png')}
         style={styles.rightArrow}></Image>
@@ -78,9 +80,11 @@ export default function TestScreen() {
       <View style={styles.container}>
         <Text style={styles.otherOptionText}>
           Don nott have an account?{' '}
-          <Link href="/SignUp" style={{ color: colors.golden }}>
+          <TouchableOpacity>
+            <Link href="/SignUp" style={{ color: colors.golden }}>
             Sign Up
-          </Link>
+            </Link>
+          </TouchableOpacity>
         </Text> 
       </View>
       

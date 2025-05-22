@@ -125,7 +125,11 @@ export default function SignUp() {
             <View>
                 <Text style={styles.otherOptionText}>
                     Already a member? {' '} 
-                    <Link href="/LogIn" style={{ color: colors.golden }}>Sign In</Link>
+                    <TouchableOpacity>
+                        <Link href="/LogIn" style={{ color: colors.golden }}>
+                        Sign In
+                        </Link>
+                    </TouchableOpacity>
                 </Text>
             </View>
         </View>
