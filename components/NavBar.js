@@ -16,7 +16,7 @@ const NavBar = () => {
           </TouchableOpacity>
         </Link>
         
-        <Link href="/search" asChild>
+        <Link href="/index" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/search-icon.svg')} 
@@ -28,7 +28,7 @@ const NavBar = () => {
         {/* Empty space for the center button */}
         <View style={styles.emptySpace}></View>
         
-        <Link href="/saved" asChild>
+        <Link href="/index" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/save-icon.png')} 
@@ -37,7 +37,7 @@ const NavBar = () => {
           </TouchableOpacity>
         </Link>
         
-        <Link href="/profile" asChild>
+        <Link href="/index" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/user-icon.png')} 
@@ -48,7 +48,7 @@ const NavBar = () => {
       </View>
       
       {/* Floating Add Button */}
-      <Link href="/add-recipe" asChild>
+      <Link href="/index" asChild>
         <TouchableOpacity style={styles.addButton}>
           <Image 
             source={require('../assets/images/add-icon.png')} 
@@ -62,9 +62,10 @@ const NavBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // position: 'relative',
+    position: 'relative',
     height: '100%',
-    marginTop: 60
+    marginTop: 10
+
   },
   navItems: {
     flexDirection: 'row',

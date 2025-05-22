@@ -1,5 +1,5 @@
 import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import NavBar from '../components/NavBar';
 import colors from '../constants/Colors';
 
@@ -24,103 +24,106 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>  
-                <View style={styles.details}>
-                    <Text style={styles.name}>Hello Name</Text>
-                    <Text style={styles.description}>What are you cooking today?</Text>
+            <GestureHandlerRootView>
+                {/* Header */}
+                <View style={styles.header}>  
+                    <View style={styles.details}>
+                        <Text style={styles.name}>Hello Zubayer</Text>
+                        <Text style={styles.description}>What are you cooking today?</Text>
+                    </View>
+                    <TouchableOpacity style={styles.profileImageContainer}>
+                        <Image source={require('../assets/images/person-icon.svg')} style={styles.profileImage}/>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.profileImageContainer}>
-                    <Image source={require('../assets/images/person-icon.svg')} style={styles.profileImage}/>
-                </TouchableOpacity>
-            </View>
 
-            {/* Search Bar */}
-            <View style={styles.searchBarContainer}>
-                <View style={styles.searchBar}>
-                    <Image source={require('../assets/images/search-icon.svg')} style={styles.searchIcon}/>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Search..."
-                        placeholderTextColor={colors.grey3}
-                    />
+                {/* <SearchBar/> */}
+                {/* Search Bar */}
+                <View style={styles.searchBarContainer}>
+                    <View style={styles.searchBar}>
+                        <Image source={require('../assets/images/search-icon.svg')} style={styles.searchIcon}/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Search..."
+                            placeholderTextColor={colors.grey3}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.filterButton}>
+                        <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.filterButton}>
-                    <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
-                </TouchableOpacity>
-            </View>
 
-            {/* Cuisine Options Slider */}
-            <View style={styles.section}>
-                <ScrollView 
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.cuisineScrollContainer}
-                >
-                    {cuisines.map((cuisine, index) => (
-                        <TouchableOpacity 
-                            key={index} 
-                            style={[
-                                styles.cuisineItem,
-                                index === 0 && styles.activeCuisineItem
-                            ]}
-                        >
-                            <Text style={[
-                                styles.cuisineText,
-                                index === 0 && styles.activeCuisineText
-                            ]}>
-                                {cuisine}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-            </View>
+                {/* Cuisine Options Slider */}
+                <View style={styles.section}>
+                    <ScrollView 
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.cuisineScrollContainer}
+                    >
+                        {cuisines.map((cuisine, index) => (
+                            <TouchableOpacity 
+                                key={index} 
+                                style={[
+                                    styles.cuisineItem,
+                                    index === 0 && styles.activeCuisineItem
+                                ]}
+                            >
+                                <Text style={[
+                                    styles.cuisineText,
+                                    index === 0 && styles.activeCuisineText
+                                ]}>
+                                    {cuisine}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
 
-            {/* Featured Recipes Slider */}
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Featured Recipes</Text>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.recipeScrollContainer}
-                >
-                    {featuredItems.map((item) => (
-                        <View key={item.id} style={styles.recipeCard}>
-                            <Image source={item.image} style={styles.recipeImage}/>
-                            <Text style={styles.recipeTitle}>{item.title}</Text>
-                            <View style={styles.recipeFooter}>
-                                <Text style={styles.recipeTime}>{item.time}</Text>
-                                <TouchableOpacity>
-                                    <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                </TouchableOpacity>
+                {/* Featured Recipes Slider */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Featured Recipes</Text>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.recipeScrollContainer}
+                    >
+                        {featuredItems.map((item) => (
+                            <View key={item.id} style={styles.recipeCard}>
+                                <Image source={item.image} style={styles.recipeImage}/>
+                                <Text style={styles.recipeTitle}>{item.title}</Text>
+                                <View style={styles.recipeFooter}>
+                                    <Text style={styles.recipeTime}>{item.time}</Text>
+                                    <TouchableOpacity>
+                                        <Image source={item.icon} style={styles.bookmarkIcon}/>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View>
+                        ))}
+                    </ScrollView>
+                </View>
 
-            {/* New Recipes Slider */}
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>New Recipe</Text>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.newRecipeScrollContainer}
-                >
-                    {newRecipes.map((item) => (
-                        <View key={item.id} style={styles.newRecipeCard}>
-                            <View style={styles.newRecipeDetails}>
-                                <Text style={styles.newRecipeTitle}>{item.title}</Text>
-                                <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
-                                <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
+                {/* New Recipes Slider */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>New Recipe</Text>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.newRecipeScrollContainer}
+                    >
+                        {newRecipes.map((item) => (
+                            <View key={item.id} style={styles.newRecipeCard}>
+                                <View style={styles.newRecipeDetails}>
+                                    <Text style={styles.newRecipeTitle}>{item.title}</Text>
+                                    <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
+                                    <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
+                                </View>
+                                <Image source={item.image} style={styles.newRecipeImage}/>
                             </View>
-                            <Image source={item.image} style={styles.newRecipeImage}/>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View>
+                        ))}
+                    </ScrollView>
+                </View>
 
-            <NavBar/>
+                <NavBar/>
+            </GestureHandlerRootView>
         </View>
     );
 }
@@ -128,15 +131,15 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 30,
-        paddingTop: 40,
+        paddingHorizontal: 10,
+        paddingTop: 50,
         backgroundColor: colors.white,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 30,
+        marginBottom: 20,
     },
     details: {
         flex: 1,
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
     searchBarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 15,
     },
     searchBar: {
         flex: 1,
@@ -194,8 +197,8 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     filterIcon: {
-        width: 35,
-        height: 35,
+        width: 40,
+        height: 40,
     },
     section: {
         marginBottom: 25,

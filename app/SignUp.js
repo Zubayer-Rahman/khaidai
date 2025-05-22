@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import colors from '../constants/Colors';
 
+
 export default function SignUp() {
     const [isSelected, setSelection] = useState(false);
     const [formData, setFormData] = useState({
@@ -92,11 +93,15 @@ export default function SignUp() {
                     style={[styles.button, !isSelected && styles.buttonDisabled]}
                     disabled={!isSelected}
                 >
-                    <Text style={styles.buttonText}>Sign Up</Text>
-                    <Image 
+                    <Text style={styles.buttonText}>
+                        <Link href="/HomeScreen" style={{ color: colors.white }}>
+                            Sign Up
+                        </Link>
+                    </Text>
+                    {/* <Image 
                         source={require('../assets/images/right-arrow-icon.png')}
                         style={styles.rightArrow}
-                    />
+                    /> */}
                 </TouchableOpacity>
             </View>
 

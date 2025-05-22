@@ -4,13 +4,11 @@ import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from
 import colors from '../constants/Colors';
 
 
-
-
 const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/LogIn'); 
-    }, 3000);
+    }, 3000000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -24,23 +22,23 @@ const SplashScreen = () => {
         <View style={styles.overlay}>
                   
           <View style={styles.content}>
-            <Image source={require('../assets/images/chef-hat-icon.svg')} style={{marginBottom: 20}}></Image>
+            <Image source={require('../assets/images/chef-hat-icon.svg')} style={{marginBottom: 20, marginTop: 100 }}></Image>
             <Text style={styles.premiumText}>100K+ Premium Recipe</Text>
             <View style={{paddingTop:50, paddingBottom: 50, alignItems: 'center'}}>
               <Text style={styles.cookingText}>KhaoDao</Text>
               <Text style={styles.subtitle}>Simple way to find Tasty Recipe</Text>
             </View>
             
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} >
               <Text style={styles.buttonText}>{' '}
                 <Link href='/LogIn'>
                   Start Cooking
                 </Link>
               </Text>
-              <Image 
+              {/* <Image 
                 source={require('../assets/images/right-arrow-icon.png')}
                 style={styles.rightArrow}
-              ></Image>
+              ></Image> */}
             </TouchableOpacity>
           </View>
         </View>

@@ -45,12 +45,12 @@ export default function TestScreen() {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>{' '}
             <Link href="/HomeScreen" style={{ color: colors.white }}>
-            LogIn
+              LogIn
             </Link>
           </Text>
+          {/* <Image source={require('../assets/images/right-arrow-icon.png')}
+          style={styles.rightArrow}></Image> */}
         </TouchableOpacity>
-        <Image source={require('../assets/images/right-arrow-icon.png')}
-        style={styles.rightArrow}></Image>
       </View>
 
       <View style={styles.optionContainer}>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: colors.white,
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: '500',
     justifySelf: 'center',
   },
