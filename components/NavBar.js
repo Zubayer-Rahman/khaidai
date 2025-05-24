@@ -37,7 +37,7 @@ const NavBar = () => {
           </TouchableOpacity>
         </Link>
         
-        <Link href="/profile" asChild>
+        <Link href="/Profile" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/user-icon.png')} 

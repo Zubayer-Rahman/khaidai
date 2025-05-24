@@ -173,8 +173,8 @@ export default function HomeScreen() {
                     </ScrollView>
                 </View>
 
-                <NavBar/>
             </GestureHandlerRootView>
+            <NavBar/>
         </View>
     );
 }
