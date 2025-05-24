@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
         paddingLeft: 40,
         paddingRight: 40,
         flex: 1,
+        fontfamily: 'Poppins, sans serif',
         backgroundColor: '#fff'
     },
     heading: {

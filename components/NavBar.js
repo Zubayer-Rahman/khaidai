@@ -19,7 +19,7 @@ const NavBar = () => {
         <Link href="/index" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
-              source={require('../assets/images/search-icon.svg')} 
+              source={require('../assets/images/search-icon.png')} 
               style={styles.searchIcon}
             />
           </TouchableOpacity>

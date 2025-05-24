@@ -40,7 +40,7 @@ export default function HomeScreen() {
                 {/* Search Bar */}
                 <View style={styles.searchBarContainer}>
                     <View style={styles.searchBar}>
-                        <Image source={require('../assets/images/search-icon.svg')} style={styles.searchIcon}/>
+                        <Image source={require('../assets/images/search-icon.png')} style={styles.searchIcon}/>
                         <TextInput
                             style={styles.input}
                             placeholder="Search..."
