@@ -78,47 +78,96 @@ export default function HomeScreen() {
                     </ScrollView>
                 </View>
 
-                {/* Featured Recipes Slider */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Featured Recipes</Text>
+                <View style={{ flex: 1 }}>
                     <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.recipeScrollContainer}
+                    contentContainerStyle={{paddingBottom: 80}}
+                    showsVerticalScrollIndicator={false}
                     >
-                        {featuredItems.map((item) => (
-                            <View key={item.id} style={styles.recipeCard}>
-                                <Image source={item.image} style={styles.recipeImage}/>
-                                <Text style={styles.recipeTitle}>{item.title}</Text>
-                                <View style={styles.recipeFooter}>
-                                    <Text style={styles.recipeTime}>{item.time}</Text>
-                                    <TouchableOpacity>
-                                        <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        ))}
-                    </ScrollView>
-                </View>
+                        {/* Featured Recipes Slider */}
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Featured Recipes</Text>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.recipeScrollContainer}
+                            >
+                                {featuredItems.map((item) => (
+                                    <View key={item.id} style={styles.recipeCard}>
+                                        <Image source={item.image} style={styles.recipeImage}/>
+                                        <Text style={styles.recipeTitle}>{item.title}</Text>
+                                        <View style={styles.recipeFooter}>
+                                            <Text style={styles.recipeTime}>{item.time}</Text>
+                                            <TouchableOpacity>
+                                                <Image source={item.icon} style={styles.bookmarkIcon}/>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
 
-                {/* New Recipes Slider */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>New Recipe</Text>
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.newRecipeScrollContainer}
-                    >
-                        {newRecipes.map((item) => (
-                            <View key={item.id} style={styles.newRecipeCard}>
-                                <View style={styles.newRecipeDetails}>
-                                    <Text style={styles.newRecipeTitle}>{item.title}</Text>
-                                    <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
-                                    <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
-                                </View>
-                                <Image source={item.image} style={styles.newRecipeImage}/>
-                            </View>
-                        ))}
+                        {/* New Recipes Slider */}
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>New Recipe</Text>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.newRecipeScrollContainer}
+                            >
+                                {newRecipes.map((item) => (
+                                    <View key={item.id} style={styles.newRecipeCard}>
+                                        <View style={styles.newRecipeDetails}>
+                                            <Text style={styles.newRecipeTitle}>{item.title}</Text>
+                                            <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
+                                            <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
+                                        </View>
+                                        <Image source={item.image} style={styles.newRecipeImage}/>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Featured Recipes</Text>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.recipeScrollContainer}
+                            >
+                                {featuredItems.map((item) => (
+                                    <View key={item.id} style={styles.recipeCard}>
+                                        <Image source={item.image} style={styles.recipeImage}/>
+                                        <Text style={styles.recipeTitle}>{item.title}</Text>
+                                        <View style={styles.recipeFooter}>
+                                            <Text style={styles.recipeTime}>{item.time}</Text>
+                                            <TouchableOpacity>
+                                                <Image source={item.icon} style={styles.bookmarkIcon}/>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>New Recipe</Text>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.newRecipeScrollContainer}
+                            >
+                                {newRecipes.map((item) => (
+                                    <View key={item.id} style={styles.newRecipeCard}>
+                                        <View style={styles.newRecipeDetails}>
+                                            <Text style={styles.newRecipeTitle}>{item.title}</Text>
+                                            <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
+                                            <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
+                                        </View>
+                                        <Image source={item.image} style={styles.newRecipeImage}/>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        </View>
                     </ScrollView>
                 </View>
 

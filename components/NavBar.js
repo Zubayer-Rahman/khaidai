@@ -16,7 +16,7 @@ const NavBar = () => {
           </TouchableOpacity>
         </Link>
         
-        <Link href="/index" asChild>
+        <Link href="/search" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/search-icon.png')} 
@@ -28,7 +28,7 @@ const NavBar = () => {
         {/* Empty space for the center button */}
         <View style={styles.emptySpace}></View>
         
-        <Link href="/index" asChild>
+        <Link href="/saved" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/save-icon.png')} 
@@ -37,7 +37,7 @@ const NavBar = () => {
           </TouchableOpacity>
         </Link>
         
-        <Link href="/index" asChild>
+        <Link href="/profile" asChild>
           <TouchableOpacity style={styles.navItem}>
             <Image 
               source={require('../assets/images/user-icon.png')} 
@@ -48,7 +48,7 @@ const NavBar = () => {
       </View>
       
       {/* Floating Add Button */}
-      <Link href="/index" asChild>
+      <Link href="/create" asChild>
         <TouchableOpacity style={styles.addButton}>
           <Image 
             source={require('../assets/images/add-icon.png')} 
@@ -62,20 +62,23 @@ const NavBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    height: '100%',
-    marginTop: 10
-
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height:85,
+    zIndex: 100,
   },
   navItems: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 60,
+    height: '100%',
     backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: colors.grey3,
     paddingHorizontal: 20,
+    paddingBottom: 15
   },
   navItem: {
     padding: 10,
@@ -84,19 +87,18 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-  searchIcon:{
-    tintColor: colors.grey2,
+  searchIcon: {
     width: 24,
     height: 24,
   },
   emptySpace: {
-    width: 50, // Same as add button width
+    width: 50,
   },
   addButton: {
     position: 'absolute',
     top: -25,
     left: '50%',
-    marginLeft: -25, // Half of width
+    marginLeft: -25, 
     width: 50,
     height: 50,
     borderRadius: 25,
