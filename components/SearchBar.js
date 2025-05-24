@@ -6,7 +6,7 @@ const SearchBar = ({ searchText, onSearchChange, onFilterPress }) => {
     <View style={styles.searchBarContainer}>
       <View style={styles.searchBar}>
         <Image 
-          source={require('../assets/images/search-icon.png')} // Changed to PNG
+          source={require('../assets/images/search-icon.png')} 
           style={styles.searchIcon}
           resizeMode="contain"
         />
@@ -17,7 +17,7 @@ const SearchBar = ({ searchText, onSearchChange, onFilterPress }) => {
           value={searchText}
           onChangeText={onSearchChange}
           returnKeyType="search"
-          clearButtonMode="while-editing" // iOS only
+          clearButtonMode="while-editing" 
         />
       </View>
       <TouchableOpacity 
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 15,
-    paddingHorizontal: 15, // Added for better spacing
   },
   searchBar: {
     flex: 1,
@@ -49,36 +49,34 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
     paddingHorizontal: 15,
-    paddingVertical: 8, // Slightly reduced
-    borderWidth: 1,
+    paddingVertical: 8, 
+    borderWidth: 1.4,
     borderColor: colors.grey3,
-    shadowColor: colors.black, // For iOS
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 1,
-    elevation: 2, // For Android
+    elevation: 2, 
   },
   searchIcon: {
     width: 20,
     height: 20,
     marginRight: 10,
-    tintColor: colors.grey3, // Optional: if you want to color the icon
   },
   input: {
     flex: 1,
     fontSize: 16,
     color: colors.black,
-    paddingVertical: 0, // Ensures consistent height on different devices
+    paddingVertical: 0, 
   },
   filterButton: {
     marginLeft: 10,
     padding: 10,
-    backgroundColor: colors.white, // Optional: if you want a background
+    backgroundColor: colors.white, 
     borderRadius: 10,
   },
   filterIcon: {
-    width: 24, // Reduced for better proportion
-    height: 24,
+    width: 40,
+    height: 40,
   },
 });
 

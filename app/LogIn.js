@@ -42,15 +42,15 @@ export default function TestScreen() {
       </View>
       
       <View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>{' '}
-            <Link href="/HomeScreen" style={{ color: colors.white }}>
-              LogIn
-            </Link>
-          </Text>
+      <Link href="/HomeScreen" style={styles.button}>
+          <TouchableOpacity >
+            <Text style={styles.buttonText}>
+              Log In
+            </Text>
           {/* <Image source={require('../assets/images/right-arrow-icon.png')}
           style={styles.rightArrow}></Image> */}
         </TouchableOpacity>
+      </Link>
       </View>
 
       <View style={styles.optionContainer}>
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 18,
     fontWeight: '500',
-    justifySelf: 'center',
+    alignSelf: 'center',
+    justifySelf: 'center'
   },
 
   rightArrow:{

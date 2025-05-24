@@ -1,6 +1,7 @@
-import { Dimensions, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import NavBar from '../components/NavBar';
+import SearchBar from '../components/SearchBar';
 import colors from '../constants/Colors';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -25,64 +26,65 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <GestureHandlerRootView>
-                {/* Header */}
-                <View style={styles.header}>  
-                    <View style={styles.details}>
-                        <Text style={styles.name}>Hello Zubayer</Text>
-                        <Text style={styles.description}>What are you cooking today?</Text>
-                    </View>
-                    <TouchableOpacity style={styles.profileImageContainer}>
-                        <Image source={require('../assets/images/person-icon.svg')} style={styles.profileImage}/>
-                    </TouchableOpacity>
-                </View>
-
-                {/* <SearchBar/> */}
-                {/* Search Bar */}
-                <View style={styles.searchBarContainer}>
-                    <View style={styles.searchBar}>
-                        <Image source={require('../assets/images/search-icon.png')} style={styles.searchIcon}/>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Search..."
-                            placeholderTextColor={colors.grey3}
-                        />
-                    </View>
-                    <TouchableOpacity style={styles.filterButton}>
-                        <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
-                    </TouchableOpacity>
-                </View>
-
-                {/* Cuisine Options Slider */}
-                <View style={styles.section}>
-                    <ScrollView 
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={styles.cuisineScrollContainer}
-                    >
-                        {cuisines.map((cuisine, index) => (
-                            <TouchableOpacity 
-                                key={index} 
-                                style={[
-                                    styles.cuisineItem,
-                                    index === 0 && styles.activeCuisineItem
-                                ]}
-                            >
-                                <Text style={[
-                                    styles.cuisineText,
-                                    index === 0 && styles.activeCuisineText
-                                ]}>
-                                    {cuisine}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                </View>
-
                 <View style={{ flex: 1 }}>
                     <ScrollView
-                    contentContainerStyle={{paddingBottom: 80}}
-                    showsVerticalScrollIndicator={false}
-                    >
+                        contentContainerStyle={{paddingBottom: 80}}
+                        showsVerticalScrollIndicator={false}
+                        >
+                        {/* Header */}
+                        <View style={styles.header}>  
+                            <View style={styles.details}>
+                                <Text style={styles.name}>Hello Zubayer</Text>
+                                <Text style={styles.description}>What are you cooking today?</Text>
+                            </View>
+                            <TouchableOpacity style={styles.profileImageContainer}>
+                                <Image source={require('../assets/images/person-icon.svg')} style={styles.profileImage}/>
+                            </TouchableOpacity>
+                        </View>
+
+                        <SearchBar/>
+                        {/* Search Bar */}
+                        {/* <View style={styles.searchBarContainer}>
+                            <View style={styles.searchBar}>
+                                <Image source={require('../assets/images/search-icon.png')} style={styles.searchIcon}/>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Search..."
+                                    placeholderTextColor={colors.grey3}
+                                />
+                            </View>
+                            <TouchableOpacity style={styles.filterButton}>
+                                <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
+                            </TouchableOpacity>
+                        </View> */}
+
+                        {/* Cuisine Options Slider */}
+                        <View style={styles.section}>
+                            <ScrollView 
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.cuisineScrollContainer}
+                            >
+                                {cuisines.map((cuisine, index) => (
+                                    <TouchableOpacity 
+                                        key={index} 
+                                        style={[
+                                            styles.cuisineItem,
+                                            index === 0 && styles.activeCuisineItem
+                                        ]}
+                                    >
+                                        <Text style={[
+                                            styles.cuisineText,
+                                            index === 0 && styles.activeCuisineText
+                                        ]}>
+                                            {cuisine}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                        </View>
+
+                
                         {/* Featured Recipes Slider */}
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>Featured Recipes</Text>
