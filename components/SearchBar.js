@@ -25,11 +25,14 @@ const SearchBar = ({ searchText, onSearchChange, onFilterPress }) => {
         onPress={onFilterPress}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
-        <Image 
-          source={require('../assets/images/Filter.png')} 
+
+        <View style={{width: 40, height: 40, backgroundColor: colors.primary100, alignItems: 'center', justifyContent: 'center', borderRadius: 10}}>
+          <Image 
+          source={require('../assets/images/setting.png')} 
           style={styles.filterIcon}
           resizeMode="contain"
         />
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -75,8 +78,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   filterIcon: {
-    width: 40,
-    height: 40,
+    width: 20,
+    height: 20,
+    tintColor: colors.white
   },
 });
 
