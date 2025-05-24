@@ -89,20 +89,11 @@ export default function SignUp() {
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                    style={[styles.button, !isSelected && styles.buttonDisabled]}
-                    disabled={!isSelected}
-                >
-                    <Text style={styles.buttonText}>
-                        <Link href="/HomeScreen" style={{ color: colors.white }}>
-                            Sign Up
-                        </Link>
-                    </Text>
-                    {/* <Image 
-                        source={require('../assets/images/right-arrow-icon.png')}
-                        style={styles.rightArrow}
-                    /> */}
-                </TouchableOpacity>
+                <Link href="/HomeScreen" asChild>
+                    <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                    </TouchableOpacity>
+                </Link>
             </View>
 
             <View style={styles.optionContainer}>
@@ -131,7 +122,7 @@ export default function SignUp() {
                 <Text style={styles.otherOptionText}>
                     Already a member? {' '} 
                     <TouchableOpacity>
-                        <Link href="/LogIn" style={{ color: colors.golden }}>
+                        <Link href="/LogIn" style={{ color: colors.golden, fontWeight: 600 }}>
                         Sign In
                         </Link>
                     </TouchableOpacity>
@@ -144,9 +135,9 @@ export default function SignUp() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 40,
-        paddingBottom: 80,
-        paddingLeft: 40,
-        paddingRight: 40,
+        paddingBottom:40,
+        paddingLeft: 20,
+        paddingRight: 20,
         flex: 1,
         fontfamily: 'Poppins, sans serif',
         backgroundColor: '#fff'

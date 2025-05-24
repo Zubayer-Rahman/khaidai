@@ -5,179 +5,191 @@ import colors from '../constants/Colors';
 
 export default function TestScreen() {
   return (
-    <ImageBackground>
-      <View style={styles.headingContainer}>
-        <Text style={{ color: colors.black, fontSize: 30, fontWeight: '700' }}>
-          Hello,
-        </Text>
-        <Text style={{ color: colors.black, fontSize: 24, fontWeight: '500' }}>
-          Welcome Back!
-        </Text>
-      </View>
+    <ImageBackground style={styles.background}>
+      <View style={styles.contentContainer}>
+        <View style={styles.headingContainer}>
+          <Text style={styles.mainHeading}>Hello,</Text>
+          <Text style={styles.subHeading}>Welcome Back!</Text>
+        </View>
 
-      <View>
-        <Text style={styles.inputLabel}>
-          Email
-        </Text>
-        <TextInput 
-        style = {styles.input}
-        underlineColorAndroid = "transparent"
-        placeholder = "Email"
-        placeholderTextColor = {colors.grey2}
-        autoCapitalize = "none"/>
+        <View style={styles.formContainer}>
+          <Text style={styles.inputLabel}>Email</Text>
+          <TextInput 
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Email"
+            placeholderTextColor={colors.grey2}
+            autoCapitalize="none"
+          />
 
-        <Text style={styles.inputLabel}>
-          Password
-        </Text>
-        <TextInput 
-        style = {styles.input}
-        underlineColorAndroid = "transparent"
-        placeholder = "Password"
-        placeholderTextColor = {colors.grey2}
-        autoCapitalize = "none"/>
+          <Text style={styles.inputLabel}>Password</Text>
+          <TextInput 
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Password"
+            placeholderTextColor={colors.grey2}
+            autoCapitalize="none"
+            secureTextEntry
+          />
 
-        <Text style={{ paddingLeft: 20, color: colors.golden, fontSize: 16, fontWeight: '400'}}>
-          Forgot Password?
-        </Text>
-      </View>
-      
-      <View>
-      <Link href="/HomeScreen" style={styles.button}>
-          <TouchableOpacity >
-            <Text style={styles.buttonText}>
-              Log In
-            </Text>
-          {/* <Image source={require('../assets/images/right-arrow-icon.png')}
-          style={styles.rightArrow}></Image> */}
-        </TouchableOpacity>
-      </Link>
-      </View>
-
-      <View style={styles.optionContainer}>
-        <Text style={styles.optionText}>
-          Or Sign In With
-        </Text>
-      </View>
-
-      <View style={styles.iconContainer}> 
-        <TouchableOpacity style={styles.iconButton}>
-          <Image
-            source={require('../assets/images/google-icon.png')}
-            style={styles.icon}
-          ></Image>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.iconButton}>
-          <Image
-            source={require('../assets/images/facebook-icon.png')}
-            style={styles.icon}
-          >
-          </Image>
-        </TouchableOpacity>
-      </View>
-
-
-      <View style={styles.container}>
-        <Text style={styles.otherOptionText}>
-          Don nott have an account?{' '}
           <TouchableOpacity>
-            <Link href="/SignUp" style={{ color: colors.golden }}>
-            Sign Up
-            </Link>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
           </TouchableOpacity>
-        </Text> 
+        </View>
+        
+        <Link href="/HomeScreen" asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Log In</Text>
+          </TouchableOpacity>
+        </Link>
+
+        <View style={styles.optionContainer}>
+          <Text style={styles.optionText}>Or Sign In With</Text>
+        </View>
+
+        <View style={styles.iconContainer}> 
+          <TouchableOpacity style={styles.iconButton}>
+            <Image
+              source={require('../assets/images/google-icon.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.iconButton}>
+            <Image
+              source={require('../assets/images/facebook-icon.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.signupContainer}>
+          <Text style={styles.signupText}>Don not have an account? </Text>
+          <Link href="/SignUp" asChild>
+            <TouchableOpacity>
+              <Text style={styles.signupLink}>Sign Up</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
       </View>
-      
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  headingContainer:{
-    padding: 20, 
-    fontfamily: 'Poppins, sans serif', 
-    marginTop: 60, 
-    marginBottom: 20 
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  headingContainer: {
+    // padding: 20,
+    marginTop: 120,
+    marginBottom: 20,
+  },
+  mainHeading: {
+    color: colors.black,
+    fontSize: 30,
+    fontWeight: '700',
+    fontFamily: 'Poppins',
+  },
+  subHeading: {
+    color: colors.black,
+    fontSize: 24,
+    fontWeight: '500',
+    fontFamily: 'Poppins',
+  },
+  formContainer: {
+    marginBottom: 20,
+    marginTop: 30,
+
   },
   input: {
-    height: 60,
-    width: '90%',
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    height: 50,
+    width: '100%',
+    marginBottom: 15,
+    paddingHorizontal: 15,
     borderWidth: 1,
     borderColor: colors.grey2,
     borderRadius: 10,
-    marginLeft: 20,
+    fontSize: 16,
   },
-
-  inputLabel:{
-    padding: 20, 
-    color: colors.black, 
-    fontSize: 16, 
-    fontWeight: '400'
+  inputLabel: {
+    marginLeft: 5,
+    marginBottom: 5,
+    color: colors.black,
+    fontSize: 16,
+    fontWeight: '400',
+    fontFamily: 'Poppins',
   },
-
+  forgotPassword: {
+    marginLeft: 5,
+    color: colors.golden,
+    fontSize: 16,
+    fontWeight: '400',
+    fontFamily: 'Poppins',
+  },
   button: {
     height: 50,
-    backgroundColor: colors.primary100,
-    paddingVertical: 15,
     borderRadius: 10,
-    marginTop: 20,
-    width: '90%',
+    marginVertical: 10,
+    width: '100%',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 20,
+    backgroundColor: colors.primary100,
   },
-
   buttonText: {
     color: colors.white,
     fontSize: 18,
     fontWeight: '500',
-    alignSelf: 'center',
-    justifySelf: 'center'
+    fontFamily: 'Poppins',
   },
-
-  rightArrow:{
-    width: 10,
-    height: 10,
-    position: 'absolute',
-    right: 160,
-    top: 40,
+  optionContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
   },
-
-  optionContainer:{
-    padding: 20, 
-    fontfamily: 'Poppins, sans serif',
-    alignSelf: 'center',  
-    marginBottom: 20,
-  },
-
   optionText: {
     color: colors.grey3,
     fontSize: 14,
     fontWeight: '400',
-    alignSelf: 'center',
+    fontFamily: 'Poppins',
   },
-
-  iconContainer:{
-    flexDirection: 'row', 
-    justifyContent: 'center', 
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+    marginBottom: 20,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  iconButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 10
-  },
-
-  icon:{
-    width: 30,
-    height: 30,
-    marginTop: 10,
-    alignSelf: 'center',
-  },
-
-  iconButton:{ 
-    width: 50, 
-    height: 50, 
     backgroundColor: colors.white2,
-    borderRadius: 15, 
+    borderRadius: 15,
   },
-
-  otherOptionText:{ padding: 20, color: colors.black, fontSize: 16, fontWeight: '400', alignSelf: 'center'},
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  signupText: {
+    color: colors.black,
+    fontSize: 16,
+    fontWeight: '400',
+    fontFamily: 'Poppins',
+  },
+  signupLink: {
+    color: colors.golden,
+    fontSize: 16,
+    fontWeight: '600',
+    fontFamily: 'Poppins',
+  },
 });
