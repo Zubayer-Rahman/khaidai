@@ -35,10 +35,6 @@ const SplashScreen = () => {
                   Start Cooking
                 </Link>
               </Text>
-              {/* <Image 
-                source={require('../assets/images/right-arrow-icon.png')}
-                style={styles.rightArrow}
-              ></Image> */}
             </TouchableOpacity>
           </View>
         </View>

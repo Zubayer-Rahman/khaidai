@@ -1,8 +1,8 @@
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
-import NavBar from '../components/NavBar';
-import SearchBar from '../components/SearchBar';
-import colors from '../constants/Colors';
+// import NavBar from '../../components/NavBar';
+// import SearchBar from '../../components/SearchBar';
+import colors from '../../constants/Colors';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -10,17 +10,17 @@ export default function HomeScreen() {
     const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
     
     const featuredItems = [
-        { id: 1, title: 'Classic Greek Salad', image: require('../assets/images/product.png'), time: '15 mins', icon: require('../assets/images/bookmark.png')},
-        { id: 2, title: 'Italian Pasta', image: require('../assets/images/product.png'), time: '20 mins', icon: require('../assets/images/bookmark.png')},
-        { id: 3, title: 'Chicken Curry', image: require('../assets/images/product.png'), time: '30 mins', icon: require('../assets/images/bookmark.png')},
-        { id: 4, title: 'Beef Steak', image: require('../assets/images/product.png'), time: '25 mins', icon: require('../assets/images/bookmark.png')},
+        { id: 1, title: 'Classic Greek Salad', image: require('../../assets/images/product.png'), time: '15 mins', icon: require('../../assets/images/bookmark.png')},
+        { id: 2, title: 'Italian Pasta', image: require('../../assets/images/product.png'), time: '20 mins', icon: require('../../assets/images/bookmark.png')},
+        { id: 3, title: 'Chicken Curry', image: require('../../assets/images/product.png'), time: '30 mins', icon: require('../../assets/images/bookmark.png')},
+        { id: 4, title: 'Beef Steak', image: require('../../assets/images/product.png'), time: '25 mins', icon: require('../../assets/images/bookmark.png')},
     ];
 
     const newRecipes = [
-        { id: 1, title: 'Vegetable Stir Fry', image: require('../assets/images/product.png'), time: '15 mins', rating: '4.5'},
-        { id: 2, title: 'Chocolate Cake', image: require('../assets/images/product.png'), time: '45 mins', rating: '4.8'},
-        { id: 3, title: 'Mushroom Soup', image: require('../assets/images/product.png'), time: '20 mins', rating: '4.2'},
-        { id: 4, title: 'Grilled Salmon', image: require('../assets/images/product.png'), time: '25 mins', rating: '4.7'},
+        { id: 1, title: 'Vegetable Stir Fry', image: require('../../assets/images/product.png'), time: '15 mins', rating: '4.5'},
+        { id: 2, title: 'Chocolate Cake', image: require('../../assets/images/product.png'), time: '45 mins', rating: '4.8'},
+        { id: 3, title: 'Mushroom Soup', image: require('../../assets/images/product.png'), time: '20 mins', rating: '4.2'},
+        { id: 4, title: 'Grilled Salmon', image: require('../../assets/images/product.png'), time: '25 mins', rating: '4.7'},
     ];
 
     return (
@@ -38,11 +38,11 @@ export default function HomeScreen() {
                                 <Text style={styles.description}>What are you cooking today?</Text>
                             </View>
                             <TouchableOpacity style={styles.profileImageContainer}>
-                                <Image source={require('../assets/images/person-icon.svg')} style={styles.profileImage}/>
+                                <Image source={require('../../assets/images/person-icon.svg')} style={styles.profileImage}/>
                             </TouchableOpacity>
                         </View>
 
-                        <SearchBar/>
+                        {/* <SearchBar/> */}
                         {/* Search Bar */}
                         {/* <View style={styles.searchBarContainer}>
                             <View style={styles.searchBar}>
@@ -174,7 +174,7 @@ export default function HomeScreen() {
                 </View>
 
             </GestureHandlerRootView>
-            <NavBar/>
+            {/* <NavBar/> */}
         </View>
     );
 }
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        paddingTop: 50,
+        paddingTop: 30,
         backgroundColor: colors.white,
     },
     header: {

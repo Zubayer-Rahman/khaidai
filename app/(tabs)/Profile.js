@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 
 const Profile = () => {
   return (
@@ -12,7 +12,7 @@ const Profile = () => {
                     <Text style={styles.userName}>Hello user</Text>
                     <TouchableOpacity>
                         <Image
-                        source={require('../assets/images/more.png')}
+                        source={require('../../assets/images/more.png')}
                         />
                     </TouchableOpacity>
                 </View>
@@ -21,7 +21,7 @@ const Profile = () => {
                 <View style={styles.mainProfileContainer}>
                     <View>
                         <Image
-                            source={require('../assets/images/profile-picture.png')}
+                            source={require('../../assets/images/profile-picture.png')}
                         />
                     </View>
 
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     profileContainer:{
         paddingTop: 40,
         paddingHorizontal:20,
-        // height: '100%'
     },
     userNameContainer:{
         flex: 1,
