@@ -1,7 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import NavBar from '../components/NavBar';
 import Colors from '../constants/Colors';
 
 const Profile = () => {
@@ -9,7 +8,7 @@ const Profile = () => {
     <SafeAreaView style={styles.profileContainer}>
         <GestureHandlerRootView style={{flex: 1}}>
             <View style={{flex: 1, marginBottom: 100}}>
-                <View style={styles.userNamecontainer}>
+                <View style={styles.userNameContainer}>
                     <Text style={styles.userName}>Hello user</Text>
                     <TouchableOpacity>
                         <Image
@@ -28,8 +27,8 @@ const Profile = () => {
 
                     <View style={styles.followFollowingContainer}>
                         <View style={styles.rfContainer}>
-                            <Text style={styles.recipieNumText}>Recipe</Text>
-                            <Text style={styles.recipieNum}>34</Text>
+                            <Text style={styles.recipeNumText}>Recipe</Text>
+                            <Text style={styles.recipeNum}>34</Text>
                         </View>
 
                         <View style={styles.rfContainer}>
@@ -51,7 +50,7 @@ const Profile = () => {
                 </View>
             </View>
         </GestureHandlerRootView>
-        <NavBar/>
+        {/* <NavBar/> */}
     </SafeAreaView>
 
   )
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:20,
         // height: '100%'
     },
-    userNamecontainer:{
+    userNameContainer:{
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -89,11 +88,11 @@ const styles = StyleSheet.create({
         gap: 10,
         alignItems: 'center'
     },
-    recipieNumText:{
+    recipeNumText:{
         fontSize: 16,
         fontWeight: 500
     },
-    recipieNum:{
+    recipeNum:{
         fontSize: 14,
         fontWeight: 500
     },
