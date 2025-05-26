@@ -1,7 +1,8 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 // import NavBar from '../../components/NavBar';
-// import SearchBar from '../../components/SearchBar';
+import { Link } from 'expo-router';
+import SearchBar from '../../components/SearchBar';
 import colors from '../../constants/Colors';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -37,12 +38,14 @@ export default function HomeScreen() {
                                 <Text style={styles.name}>Hello Zubayer</Text>
                                 <Text style={styles.description}>What are you cooking today?</Text>
                             </View>
-                            <TouchableOpacity style={styles.profileImageContainer}>
-                                <Image source={require('../../assets/images/person-icon.svg')} style={styles.profileImage}/>
-                            </TouchableOpacity>
+                            <Link href="/Profile" asChild>
+                                <Pressable style={styles.profileImageContainer}>
+                                    <Image source={require('../../assets/images/person-icon.svg')} style={styles.profileImage}/>
+                                </Pressable>
+                            </Link>
                         </View>
 
-                        {/* <SearchBar/> */}
+                        <SearchBar/>
                         {/* Search Bar */}
                         {/* <View style={styles.searchBarContainer}>
                             <View style={styles.searchBar}>
@@ -53,9 +56,9 @@ export default function HomeScreen() {
                                     placeholderTextColor={colors.grey3}
                                 />
                             </View>
-                            <TouchableOpacity style={styles.filterButton}>
+                            <Pressable style={styles.filterButton}>
                                 <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View> */}
 
                         {/* Cuisine Options Slider */}
@@ -66,7 +69,7 @@ export default function HomeScreen() {
                                 contentContainerStyle={styles.cuisineScrollContainer}
                             >
                                 {cuisines.map((cuisine, index) => (
-                                    <TouchableOpacity 
+                                    <Pressable 
                                         key={index} 
                                         style={[
                                             styles.cuisineItem,
@@ -79,7 +82,7 @@ export default function HomeScreen() {
                                         ]}>
                                             {cuisine}
                                         </Text>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 ))}
                             </ScrollView>
                         </View>
@@ -99,9 +102,9 @@ export default function HomeScreen() {
                                         <Text style={styles.recipeTitle}>{item.title}</Text>
                                         <View style={styles.recipeFooter}>
                                             <Text style={styles.recipeTime}>{item.time}</Text>
-                                            <TouchableOpacity>
+                                            <Pressable>
                                                 <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                            </TouchableOpacity>
+                                            </Pressable>
                                         </View>
                                     </View>
                                 ))}
@@ -142,9 +145,9 @@ export default function HomeScreen() {
                                         <Text style={styles.recipeTitle}>{item.title}</Text>
                                         <View style={styles.recipeFooter}>
                                             <Text style={styles.recipeTime}>{item.time}</Text>
-                                            <TouchableOpacity>
+                                            <Pressable>
                                                 <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                            </TouchableOpacity>
+                                            </Pressable>
                                         </View>
                                     </View>
                                 ))}

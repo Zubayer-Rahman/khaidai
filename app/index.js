@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router';
 import { useEffect } from 'react';
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
 import colors from '../constants/Colors';
 
 
@@ -29,13 +29,13 @@ const SplashScreen = () => {
               <Text style={styles.subtitle}>Simple way to find Tasty Recipe</Text>
             </View>
             
-            <TouchableOpacity style={styles.button} >
+            <Pressable style={styles.button} >
               <Text style={styles.buttonText}>{' '}
                 <Link href='/LogIn'>
                   Start Cooking
                 </Link>
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </ImageBackground>

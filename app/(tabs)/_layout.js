@@ -14,7 +14,7 @@ const tabsLayout = () => {
         tabBarStyle: {
           paddingBottom: 10,
           paddingTop: 8,
-          height: 50, // Increased height for better touch area
+          height: 50,
         },
       }}
     >

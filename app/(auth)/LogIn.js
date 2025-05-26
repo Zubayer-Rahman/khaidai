@@ -1,9 +1,63 @@
+import { useSignIn } from '@clerk/clerk-expo';
 import { ImageBackground } from 'expo-image';
-import { Link } from 'expo-router';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import colors from '../constants/Colors';
+import { Link, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import colors from '../../constants/Colors';
 
 export default function TestScreen() {
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter();
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const showErrorAlert = (message) => {
+    Alert.alert(
+      'Login Failed',
+      message,
+      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      { cancelable: true }
+    );
+  };
+
+  const handleLogIn = async () => {
+    if (!isLoaded) {
+      showErrorAlert('Authentication service not ready');
+      return;
+    }
+
+    if (!emailAddress || !password) {
+      showErrorAlert('Please fill in all fields');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      if (signInAttempt.status === 'complete') {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace('/HomeScreen');
+      } else {
+        showErrorAlert('Sign-in failed. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      let errorMessage = 'Invalid credentials. Please try again.';
+      if (err.errors && err.errors[0]) {
+        errorMessage = err.errors[0].message;
+      }
+      showErrorAlert(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ImageBackground style={styles.background}>
       <View style={styles.contentContainer}>
@@ -16,59 +70,68 @@ export default function TestScreen() {
           <Text style={styles.inputLabel}>Email</Text>
           <TextInput 
             style={styles.input}
-            underlineColorAndroid="transparent"
             placeholder="Email"
             placeholderTextColor={colors.grey2}
             autoCapitalize="none"
+            keyboardType="email-address"
+            value={emailAddress}
+            onChangeText={setEmailAddress}
+            editable={!loading}
           />
 
           <Text style={styles.inputLabel}>Password</Text>
           <TextInput 
             style={styles.input}
-            underlineColorAndroid="transparent"
             placeholder="Password"
             placeholderTextColor={colors.grey2}
             autoCapitalize="none"
-            secureTextEntry
+            secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
+            editable={!loading}
           />
 
-          <TouchableOpacity>
+          <Pressable onPress={() => router.push('/ResetPassword')}>
             <Text style={styles.forgotPassword}>Forgot Password?</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         
-        <Link href="/HomeScreen" asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Log In</Text>
-          </TouchableOpacity>
-        </Link>
+        <Pressable 
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogIn}
+          disabled={loading}
+        >
+          <Text style={styles.buttonText}>
+            {loading ? 'Signing In...' : 'Log In'}
+          </Text>
+        </Pressable>
 
         <View style={styles.optionContainer}>
           <Text style={styles.optionText}>Or Sign In With</Text>
         </View>
 
         <View style={styles.iconContainer}> 
-          <TouchableOpacity style={styles.iconButton}>
+          <Pressable style={styles.iconButton} disabled={loading}>
             <Image
-              source={require('../assets/images/google-icon.png')}
+              source={require('../../assets/images/google-icon.png')}
               style={styles.icon}
             />
-          </TouchableOpacity>
+          </Pressable>
 
-          <TouchableOpacity style={styles.iconButton}>
+          <Pressable style={styles.iconButton} disabled={loading}>
             <Image
-              source={require('../assets/images/facebook-icon.png')}
+              source={require('../../assets/images/facebook-icon.png')}
               style={styles.icon}
             />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.signupContainer}>
-          <Text style={styles.signupText}>Don not have an account? </Text>
+          <Text style={styles.signupText}>Dont have an account? </Text>
           <Link href="/SignUp" asChild>
-            <TouchableOpacity>
+            <Pressable disabled={loading}>
               <Text style={styles.signupLink}>Sign Up</Text>
-            </TouchableOpacity>
+            </Pressable>
           </Link>
         </View>
       </View>
@@ -86,7 +149,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headingContainer: {
-    // padding: 20,
     marginTop: 120,
     marginBottom: 20,
   },
@@ -105,7 +167,6 @@ const styles = StyleSheet.create({
   formContainer: {
     marginBottom: 20,
     marginTop: 30,
-
   },
   input: {
     height: 50,
@@ -146,6 +207,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     fontFamily: 'Poppins',
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   optionContainer: {
     marginVertical: 20,
