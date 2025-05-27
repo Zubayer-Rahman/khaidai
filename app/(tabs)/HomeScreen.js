@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 // import NavBar from '../../components/NavBar';
 import { Link } from 'expo-router';
@@ -11,26 +11,7 @@ const { width: screenWidth } = Dimensions.get('window');
 
 export default function HomeScreen() {
 const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
-const { recipes, loading, error, refreshing, refreshRecipes } = useRecipes(15);
-
-  if (loading && !refreshing) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.center}>
-        <Text style={styles.error}>Error loading recipes</Text>
-        <Pressable onPress={refreshRecipes}>
-          <Text style={styles.retry}>Tap to retry</Text>
-        </Pressable>
-      </View>
-    );
-  }
+const { recipes } = useRecipes(30);
 
     return (
         <View style={styles.container}>
@@ -90,14 +71,8 @@ const { recipes, loading, error, refreshing, refreshRecipes } = useRecipes(15);
                                 keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => <RecipeCard recipe={item} />}
                                 contentContainerStyle={styles.list}
-                                showsVerticalScrollIndicator={false}
-                                refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={refreshRecipes}
-                                    colors={['#FF6D6D']}
-                                />
-                                }
+                                horizontal = {true}
+                                showsHorizontalScrollIndicator={false}
                             />
                         </View>
 
@@ -110,13 +85,6 @@ const { recipes, loading, error, refreshing, refreshRecipes } = useRecipes(15);
                                 renderItem={({ item }) => <RecipeCard recipe={item} />}
                                 contentContainerStyle={styles.list}
                                 showsVerticalScrollIndicator={false}
-                                refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing}
-                                    onRefresh={refreshRecipes}
-                                    colors={['#FF6D6D']}
-                                />
-                                }
                             />
                         </View>
                     </ScrollView>
@@ -299,4 +267,7 @@ const styles = StyleSheet.create({
         height: 80,
         borderRadius: 40,
     },
+    list:{
+        gap: 10,
+    }
 });

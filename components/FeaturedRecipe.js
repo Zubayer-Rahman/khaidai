@@ -1,19 +1,14 @@
-import { Dimensions, Image, Link, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Link, Pressable, StyleSheet, Text, View } from 'react-native';
 import colors from '../constants/Colors';
 const { width: screenWidth } = Dimensions.get('window');
 
 
 
-const recipe = (recipe) => {
+const recipe = (Recipes) => {
   return (
     <Link href="/recipeDetails" asChild>
         <Pressable style={styles.section}>
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.recipeScrollContainer}
-            >
-             <Image style={styles.recipeImage} source={{ uri: recipe.image }}/>
+            <Image style={styles.recipeImage} source={{ uri: recipe.image }}/>
             <Text style={styles.recipeTitle}>{recipe.name}</Text>
             <View style={styles.recipeFooter}>
                 <Text style={styles.recipeTime}>⏱️ {recipe.prepTimeMinutes} min</Text>
@@ -22,7 +17,6 @@ const recipe = (recipe) => {
                     <Image style={styles.bookmarkIcon} source={require('../assets/images/bookmark.png')}/>
                 </Pressable>
             </View>       
-            </ScrollView>
         </Pressable>
     </Link>
 
@@ -34,9 +28,11 @@ export default recipe
 const styles = StyleSheet.create({
     section: {
         marginBottom: 25,
+        gap: 10,
+        
     },
     sectionTitle: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: '700',
         color: colors.black,
         marginBottom: 15,
@@ -67,6 +63,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        width: 400,
+        height: 400
     },
     recipeTime: {
         fontSize: 14,

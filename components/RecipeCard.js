@@ -39,10 +39,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 150,
+    height: "200",
   },
   details: {
     padding: 12,
+    width: 250
   },
   title: {
     fontSize: 16,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   },
   metaContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 15,
     marginBottom: 4,
   },
   metaText: {
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888',
     fontStyle: 'italic',
+    marginTop: 10
   },
 });
 

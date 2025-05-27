@@ -16,7 +16,7 @@ export default function TestScreen() {
     Alert.alert(
       'Login Failed',
       message,
-      [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      [{ text: 'OK' , onPress: () => console.log('OK Pressed') }],
       { cancelable: true }
     );
   };

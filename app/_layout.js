@@ -18,7 +18,7 @@ export default function RootLayout() {
       <ClerkLoaded>
         <SafeAreaProvider>
           <SafeAreaView style={{flex: 1, backgroundColor: Colors.white}}>
-            <Stack screenOptions={{ headerShown: false }}/>
+            <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}/>
           </SafeAreaView>
         </SafeAreaProvider>
       </ClerkLoaded>
