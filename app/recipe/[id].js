@@ -98,9 +98,88 @@ export default function RecipeDetail() {
   );
 }
 const styles = StyleSheet.create({
-  image:{
+container:{
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 2,
+},
+image:{
     width: '100%',
     height: 250,
     borderRadius: 10,
-  }
+},
+title:{
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10,
+},
+metaContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+    gap: 5,
+},
+metaItem:{
+    flex: 1,
+    alignItems: 'left',
+    padding: 5,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+},
+metaLabel:{
+    fontSize: 14,
+    color: '#666',
+},
+metaValue:{
+    fontSize: 12,
+    fontWeight: 'bold',
+},
+sectionTitle:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    color: '#333',
+},
+ingredientItem:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+},
+bullet:{
+    fontSize: 18,
+    color: '#888',
+    marginRight: 5,
+},
+ingredientText:{
+    fontSize: 16,
+    color: '#333',
+},
+instructionItem:{
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 10,
+},
+stepNumber:{
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginRight: 10,
+},
+instructionText:{
+    fontSize: 16,
+    color: '#333',
+},
+center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+error: {
+    color: 'red',
+    fontSize: 16,
+},
+content: {
+    padding: 16,
+},
+
 });
