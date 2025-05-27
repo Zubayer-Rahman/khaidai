@@ -62,8 +62,8 @@ export default function SignUp() {
         await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
         setPendingVerification(true);
          } catch (err) {
-        console.error(JSON.stringify(err, null, 2));
-        Alert.alert('Error', err.errors?.[0]?.message || 'Sign up failed');
+            console.error(JSON.stringify(err, null, 2));
+            Alert.alert('Error', err.errors?.[0]?.message || 'Sign up failed');
         } finally {
         setLoading(false);
         }

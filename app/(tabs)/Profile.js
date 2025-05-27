@@ -116,7 +116,7 @@ const Profile = () => {
 const styles = StyleSheet.create({
   profileContainer: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 10,
     paddingHorizontal: 20,
     backgroundColor: Colors.white,
   },

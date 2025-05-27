@@ -1,28 +1,36 @@
-import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 // import NavBar from '../../components/NavBar';
 import { Link } from 'expo-router';
+import RecipeCard from '../../components/RecipeCard';
 import SearchBar from '../../components/SearchBar';
 import colors from '../../constants/Colors';
+import useRecipes from '../../hooks/useRecipe';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 export default function HomeScreen() {
-    const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
-    
-    const featuredItems = [
-        { id: 1, title: 'Classic Greek Salad', image: require('../../assets/images/product.png'), time: '15 mins', icon: require('../../assets/images/bookmark.png')},
-        { id: 2, title: 'Italian Pasta', image: require('../../assets/images/product.png'), time: '20 mins', icon: require('../../assets/images/bookmark.png')},
-        { id: 3, title: 'Chicken Curry', image: require('../../assets/images/product.png'), time: '30 mins', icon: require('../../assets/images/bookmark.png')},
-        { id: 4, title: 'Beef Steak', image: require('../../assets/images/product.png'), time: '25 mins', icon: require('../../assets/images/bookmark.png')},
-    ];
+const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
+const { recipes, loading, error, refreshing, refreshRecipes } = useRecipes(15);
 
-    const newRecipes = [
-        { id: 1, title: 'Vegetable Stir Fry', image: require('../../assets/images/product.png'), time: '15 mins', rating: '4.5'},
-        { id: 2, title: 'Chocolate Cake', image: require('../../assets/images/product.png'), time: '45 mins', rating: '4.8'},
-        { id: 3, title: 'Mushroom Soup', image: require('../../assets/images/product.png'), time: '20 mins', rating: '4.2'},
-        { id: 4, title: 'Grilled Salmon', image: require('../../assets/images/product.png'), time: '25 mins', rating: '4.7'},
-    ];
+  if (loading && !refreshing) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>Error loading recipes</Text>
+        <Pressable onPress={refreshRecipes}>
+          <Text style={styles.retry}>Tap to retry</Text>
+        </Pressable>
+      </View>
+    );
+  }
 
     return (
         <View style={styles.container}>
@@ -45,21 +53,7 @@ export default function HomeScreen() {
                             </Link>
                         </View>
 
-                        <SearchBar/>
-                        {/* Search Bar */}
-                        {/* <View style={styles.searchBarContainer}>
-                            <View style={styles.searchBar}>
-                                <Image source={require('../assets/images/search-icon.png')} style={styles.searchIcon}/>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Search..."
-                                    placeholderTextColor={colors.grey3}
-                                />
-                            </View>
-                            <Pressable style={styles.filterButton}>
-                                <Image source={require('../assets/images/Filter.png')} style={styles.filterIcon}/>
-                            </Pressable>
-                        </View> */}
+                        <SearchBar/> {/* Search Bar Component*/}
 
                         {/* Cuisine Options Slider */}
                         <View style={styles.section}>
@@ -89,89 +83,41 @@ export default function HomeScreen() {
 
                 
                         {/* Featured Recipes Slider */}
-                        <View style={styles.section}>
+                        <View >
                             <Text style={styles.sectionTitle}>Featured Recipes</Text>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.recipeScrollContainer}
-                            >
-                                {featuredItems.map((item) => (
-                                    <View key={item.id} style={styles.recipeCard}>
-                                        <Image source={item.image} style={styles.recipeImage}/>
-                                        <Text style={styles.recipeTitle}>{item.title}</Text>
-                                        <View style={styles.recipeFooter}>
-                                            <Text style={styles.recipeTime}>{item.time}</Text>
-                                            <Pressable>
-                                                <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                            </Pressable>
-                                        </View>
-                                    </View>
-                                ))}
-                            </ScrollView>
+                            <FlatList
+                                data={recipes}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={refreshRecipes}
+                                    colors={['#FF6D6D']}
+                                />
+                                }
+                            />
                         </View>
 
                         {/* New Recipes Slider */}
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>New Recipe</Text>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.newRecipeScrollContainer}
-                            >
-                                {newRecipes.map((item) => (
-                                    <View key={item.id} style={styles.newRecipeCard}>
-                                        <View style={styles.newRecipeDetails}>
-                                            <Text style={styles.newRecipeTitle}>{item.title}</Text>
-                                            <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
-                                            <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
-                                        </View>
-                                        <Image source={item.image} style={styles.newRecipeImage}/>
-                                    </View>
-                                ))}
-                            </ScrollView>
-                        </View>
-
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Featured Recipes</Text>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.recipeScrollContainer}
-                            >
-                                {featuredItems.map((item) => (
-                                    <View key={item.id} style={styles.recipeCard}>
-                                        <Image source={item.image} style={styles.recipeImage}/>
-                                        <Text style={styles.recipeTitle}>{item.title}</Text>
-                                        <View style={styles.recipeFooter}>
-                                            <Text style={styles.recipeTime}>{item.time}</Text>
-                                            <Pressable>
-                                                <Image source={item.icon} style={styles.bookmarkIcon}/>
-                                            </Pressable>
-                                        </View>
-                                    </View>
-                                ))}
-                            </ScrollView>
-                        </View>
-
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>New Recipe</Text>
-                            <ScrollView
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.newRecipeScrollContainer}
-                            >
-                                {newRecipes.map((item) => (
-                                    <View key={item.id} style={styles.newRecipeCard}>
-                                        <View style={styles.newRecipeDetails}>
-                                            <Text style={styles.newRecipeTitle}>{item.title}</Text>
-                                            <Text style={styles.newRecipeInfo}>Time: {item.time}</Text>
-                                            <Text style={styles.newRecipeInfo}>Rating: {item.rating}</Text>
-                                        </View>
-                                        <Image source={item.image} style={styles.newRecipeImage}/>
-                                    </View>
-                                ))}
-                            </ScrollView>
+                            <FlatList
+                                data={recipes}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={refreshRecipes}
+                                    colors={['#FF6D6D']}
+                                />
+                                }
+                            />
                         </View>
                     </ScrollView>
                 </View>
