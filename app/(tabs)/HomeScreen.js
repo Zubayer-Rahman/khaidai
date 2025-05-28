@@ -11,7 +11,7 @@ const { width: screenWidth } = Dimensions.get('window');
 
 export default function HomeScreen() {
 const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
-const { recipes } = useRecipes(30);
+const { recipes } = useRecipes();
 
     return (
         <View style={styles.container}>

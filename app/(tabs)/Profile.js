@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    width: width * 0.8,
+    width: width * 0.85,
     backgroundColor: Colors.white,
     zIndex: 2,
     elevation: 5,
