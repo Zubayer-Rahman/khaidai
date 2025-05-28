@@ -22,7 +22,6 @@ const Profile = () => {
   const { signOut, isLoaded } = useAuth();
   const { user } = useUser();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(-width)).current;
 
@@ -38,14 +37,12 @@ const Profile = () => {
   const handleLogout = async () => {
     if (!isLoaded) return;
     
-    setLoading(true);
     try {
       await signOut();
       router.replace('/LogIn');
     } catch (err) {
       Alert.alert('Error', err.message || 'Failed to log out');
     } finally {
-      setLoading(false);
       toggleMenu();
     }
   };

@@ -1,4 +1,3 @@
-// hooks/useRecipes.js
 import { useEffect, useState } from 'react';
 
 const useRecipes = (limit = 0) => {
@@ -9,7 +8,7 @@ const useRecipes = (limit = 0) => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await fetch(`https://dummyjson.com/recipes?limit=${limit}`);
+      const response = await fetch(`https://dummyjson.com/recipes?limit=${limit=0}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

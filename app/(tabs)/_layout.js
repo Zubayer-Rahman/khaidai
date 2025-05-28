@@ -32,11 +32,11 @@ const tabsLayout = () => {
       />
 
       <Tabs.Screen
-        name="Saved"
+        name="search"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
-              name={focused ? 'bookmark' : 'bookmark-outline'} 
+              name={focused ? 'search' : 'search-outline'} 
               size={25} 
               color={color}
             />

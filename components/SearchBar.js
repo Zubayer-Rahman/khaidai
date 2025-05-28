@@ -1,12 +1,37 @@
-import { useRef, useState } from 'react';
-import { Animated, Dimensions, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import colors from '../constants/Colors';
 const { width, height } = Dimensions.get('window');
 
 const SearchBar = ({ searchText, onSearchChange }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const slideAnim = useRef(new Animated.Value(height)).current;
+  const router = useRouter();
   
+  useEffect(() => {
+    if (menuVisible) {
+      // Disable scroll
+      ScrollView.defaultProps = {
+        ...ScrollView.defaultProps,
+        scrollEnabled: false,
+      };
+    } else {
+      // Re-enable scroll
+      ScrollView.defaultProps = {
+        ...ScrollView.defaultProps,
+        scrollEnabled: true,
+      };
+    }
+    return () => {
+      // Cleanup - re-enable scroll when component unmounts
+      ScrollView.defaultProps = {
+        ...ScrollView.defaultProps,
+        scrollEnabled: true,
+      };
+    };
+  }, [menuVisible]);
+
   const toggleMenu = () => {
     if (menuVisible) {
       Animated.timing(slideAnim, {
@@ -17,16 +42,20 @@ const SearchBar = ({ searchText, onSearchChange }) => {
     } else {
       setMenuVisible(true);
       Animated.timing(slideAnim, {
-        toValue: 0, // Animates to bottom of screen
+        toValue: 0,
         duration: 300,
         useNativeDriver: true
       }).start();
     }
   };
-  
+  const handleFocus = () => {
+    router.push({
+      pathname: '/search',
+      params: { initialSearch: searchText }
+    });
+  };
   return (
     <>
-      {/* Regular search bar that scrolls with content */}
       <View style={styles.searchBarContainer}>
         <View style={styles.searchBar}>
           <Image 
@@ -42,6 +71,8 @@ const SearchBar = ({ searchText, onSearchChange }) => {
             onChangeText={onSearchChange}
             returnKeyType="search"
             clearButtonMode="while-editing" 
+            onFocus={handleFocus}
+            showSoftInputOnFocus
           />
         </View>
         <TouchableOpacity 
@@ -49,7 +80,7 @@ const SearchBar = ({ searchText, onSearchChange }) => {
           onPress={toggleMenu}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <View style={styles.filterIconContainer}>
+          <View style={{width: 40, height: 40, backgroundColor: colors.primary100, alignItems: 'center', justifyContent: 'center', borderRadius: 10}}>
             <Image 
               source={require('../assets/images/setting.png')} 
               style={styles.filterIcon}
@@ -59,7 +90,6 @@ const SearchBar = ({ searchText, onSearchChange }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Filter menu - rendered at root level */}
       {menuVisible && (
         <>
           <TouchableOpacity 
@@ -67,64 +97,58 @@ const SearchBar = ({ searchText, onSearchChange }) => {
             activeOpacity={1}
             onPress={toggleMenu}
           />
-          
-          <Animated.View style={[
-            styles.menuContainer,
-            { 
-              transform: [{ translateY: slideAnim }],
-              // These ensure it stays fixed during scroll
-              position: 'absolute',
-              bottom: 0,
-            }
-          ]}>
-            <View style={styles.menuHeader}>
-              <Text style={styles.filterText}>Filter Search</Text>
-              <TouchableOpacity onPress={toggleMenu} style={styles.closeButton}>
-                <Text style={styles.closeText}>×</Text>
-              </TouchableOpacity>
-            </View>
-            
-            <View style={styles.timeContainer}>
-              <Text style={styles.timeText}>Time</Text>
-              <View style={styles.timeButtonContainer}>
-                <Pressable style={styles.timeButton}>
-                  <Text style={styles.timeButtonText}>All</Text>
-                </Pressable>
-                <Pressable style={styles.timeButton}>
-                  <Text style={styles.timeButtonText}>Newest</Text>
-                </Pressable>
-                <Pressable style={styles.timeButton}>
-                  <Text style={styles.timeButtonText}>Oldest</Text>
-                </Pressable>
-                <Pressable style={styles.timeButton}>
-                  <Text style={styles.timeButtonText}>Popularity</Text>
-                </Pressable>
-              </View>
-            </View>
-            
-            <View style={styles.rateContainer}>
-              <Text style={styles.rateText}>Rating</Text>
-              <View style={styles.rateButtonContainer}>
-                <Pressable style={styles.rateButton}>
-                  <Text style={styles.rateButtonText}>5 ★</Text>
-                </Pressable>
-                <Pressable style={styles.rateButton}>
-                  <Text style={styles.rateButtonText}>4 ★</Text>
-                </Pressable>
-                <Pressable style={styles.rateButton}>
-                  <Text style={styles.rateButtonText}>3 ★</Text>
-                </Pressable>
-                <Pressable style={styles.rateButton}>
-                  <Text style={styles.rateButtonText}>2 ★</Text>
-                </Pressable>
-                <Pressable style={styles.rateButton}>
-                  <Text style={styles.rateButtonText}>1 ★</Text>
-                </Pressable>
-              </View>
-            </View>
-          </Animated.View>
         </>
       )}
+      <Animated.View style={[
+        styles.menuContainer,
+        { transform: [{ translateX: slideAnim }] }
+      ]}>
+        <View style={styles.menuHeader}>
+          <Text style={styles.filterText}>Filter Search</Text>
+          <TouchableOpacity onPress={toggleMenu} style={styles.closeButton}>
+            <Text style={styles.closeText}>×</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeText}>Time</Text>
+          <View style={styles.timeButtonContainer}>
+            <Pressable style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>All</Text>
+            </Pressable>
+            <Pressable style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>Newest</Text>
+            </Pressable>
+            <Pressable style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>Oldest</Text>
+            </Pressable>
+            <Pressable style={styles.timeButton}>
+              <Text style={styles.timeButtonText}>Popularity</Text>
+            </Pressable>
+          </View>
+        </View>
+        
+        <View style={styles.rateContainer}>
+          <Text style={styles.rateText}>Rating</Text>
+          <View style={styles.rateButtonContainer}>
+            <Pressable style={styles.rateButton}>
+              <Text style={styles.rateButtonText}>5 ★</Text>
+            </Pressable>
+            <Pressable style={styles.rateButton}>
+              <Text style={styles.rateButtonText}>4 ★</Text>
+            </Pressable>
+            <Pressable style={styles.rateButton}>
+              <Text style={styles.rateButtonText}>3 ★</Text>
+            </Pressable>
+            <Pressable style={styles.rateButton}>
+              <Text style={styles.rateButtonText}>2 ★</Text>
+            </Pressable>
+            <Pressable style={styles.rateButton}>
+              <Text style={styles.rateButtonText}>1 ★</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Animated.View>
     </>
   );
 };
@@ -169,28 +193,38 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   filterIcon: {
-    flex: 1,
     width: 20,
     height: 20,
     tintColor: colors.white
   },
   menuContainer: {
-    width: '100%',
-    height: 400,
-    backgroundColor: colors.primary80,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-    zIndex: 1000,
+    position: 'absolute',
+    top: 100,
+    left: 0,
+    bottom: 0,
+    width: width * 0.95,
+    height:660,
+    backgroundColor: colors.primary100,
+    zIndex: 2,
     elevation: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
+    shadowOffset: { width: 2, height: 0 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
+    padding: 30,
+    borderRadius: 20,
+    scrollBehavior (to, from, savedPosition) {
+      // ...
+    }
   },
   overlay: {
-    // backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 999,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    // backgroundColor: 'rgba(0,0,0,0.2)',
+    zIndex: 1,
   },
   menuHeader: {
     flexDirection: 'row',
@@ -213,7 +247,7 @@ const styles = StyleSheet.create({
   },
   closeText: {
     fontSize: 24,
-    color: colors.primary80,
+    color: colors.primary100,
     lineHeight: 28,
   },
   timeContainer: {
@@ -236,10 +270,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   timeButtonText: {
-    color: colors.primary80,
+    color: colors.primary100,
     fontSize: 14,
   },
-  rateContainer:{
+  rateContainer: {
     marginBottom: 20,
   },
   rateText: {
@@ -259,24 +293,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   rateButtonText: {
-    color: colors.primary80,
+    color: colors.primary100,
     fontSize: 14,
   },
-  filterContainer:{
-    width: 174,
-    height: 50,
-    backgroundColor: colors.white,
-    borderRadius: 10,
-    alignSelf: 'center',
-    marginTop: 20
-  },
-  filter:{
-    color: colors.primary100,
-    alignSelf: 'center',
-    padding: 15
-
-  }
-
 });
 
 export default SearchBar;

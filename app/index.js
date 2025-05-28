@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router';
 import { useEffect } from 'react';
-import { Image, ImageBackground, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import colors from '../constants/Colors';
 
 
@@ -8,7 +8,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/LogIn'); 
-    }, 3000000);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, []);
@@ -28,14 +28,13 @@ const SplashScreen = () => {
               <Text style={styles.cookingText}>KhaoDao</Text>
               <Text style={styles.subtitle}>Simple way to find Tasty Recipe</Text>
             </View>
-            
-            <Pressable style={styles.button} >
-              <Text style={styles.buttonText}>{' '}
-                <Link href='/LogIn'>
-                  Start Cooking
-                </Link>
-              </Text>
-            </Pressable>
+            <Link href='/LogIn'>
+                <TouchableOpacity style={styles.button} >
+                  <Text style={styles.buttonText}>{' '}
+                      Start Cooking
+                  </Text>
+                </TouchableOpacity>
+            </Link>
           </View>
         </View>
       </ImageBackground>
