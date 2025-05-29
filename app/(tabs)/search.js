@@ -136,6 +136,7 @@ export default function SearchScreen() {
                       resizeMode="cover"
                     />
                     <Text style={styles.recipeTitle} numberOfLines={1}>{item.name}</Text>
+                    <Text style={styles.recipeRating} numberOfLines={2}>Review: {item.rating} ({item.reviewCount})</Text>
                   </TouchableOpacity>
                 )}
               />
@@ -155,7 +156,7 @@ export default function SearchScreen() {
                 >
                   <Image
                     source={{ uri: item.image }}
-                    style={{ width:'100%', height: '100', borderRadius: 8, marginRight: 10, marginBottom: 10 }}
+                    style={{ width:'100%', height: '150', borderRadius: 8, marginRight: 10, marginBottom: 10, flex: 1 }}
                     resizeMode="cover"
                   />
                   <View>
@@ -220,6 +221,7 @@ const styles = StyleSheet.create({
   },
   suggestionsContainer: {
     marginBottom: 20,
+    height: 'auto'
   },
   sectionTitle: {
     fontSize: 18,
@@ -261,11 +263,16 @@ const styles = StyleSheet.create({
   },
   recipeImage: {
     width: '100%',
-    height: 'auto',
+    height: '100',
     borderRadius: 8,
     marginBottom: 8,
   },
   recipeTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.black,
+  },
+  recipeRating: {
     fontSize: 14,
     fontWeight: '500',
     color: Colors.black,
