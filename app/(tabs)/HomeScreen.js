@@ -2,6 +2,7 @@ import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from '
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 // import NavBar from '../../components/NavBar';
 import { Link } from 'expo-router';
+import { useState } from 'react';
 import RecipeCard from '../../components/RecipeCard';
 import SearchBar from '../../components/SearchBar';
 import colors from '../../constants/Colors';
@@ -12,6 +13,12 @@ const { width: screenWidth } = Dimensions.get('window');
 export default function HomeScreen() {
 const cuisines = ['All', 'Indian', 'Bangla', 'Chinese', 'Japanese', 'Thai', 'Korean', 'Italian', '+'];
 const { recipes } = useRecipes();
+
+const [searchText, setSearchText] = useState();
+
+const handleSearchChange = (text) => {
+    setSearchText(text);
+}
 
     return (
         <View style={styles.container}>
@@ -34,7 +41,10 @@ const { recipes } = useRecipes();
                             </Link>
                         </View>
 
-                        <SearchBar/> {/* Search Bar Component*/}
+                        <SearchBar
+                            searchText={searchText}
+                            onSearchChange={handleSearchChange}
+                        /> {/* Search Bar Component*/}
 
                         {/* Cuisine Options Slider */}
                         <View style={styles.section}>

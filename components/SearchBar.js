@@ -4,27 +4,26 @@ import { Animated, Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, T
 import colors from '../constants/Colors';
 const { width, height } = Dimensions.get('window');
 
-const SearchBar = ({ searchText, onSearchChange }) => {
+const SearchBar = ({ searchText, onSearchChange = () => {} }) => {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const slideAnim = useRef(new Animated.Value(height)).current;
   const router = useRouter();
+  const searchInputRef = useRef(null);
   
   useEffect(() => {
     if (menuVisible) {
-      // Disable scroll
       ScrollView.defaultProps = {
         ...ScrollView.defaultProps,
         scrollEnabled: false,
       };
     } else {
-      // Re-enable scroll
       ScrollView.defaultProps = {
         ...ScrollView.defaultProps,
         scrollEnabled: true,
       };
     }
     return () => {
-      // Cleanup - re-enable scroll when component unmounts
       ScrollView.defaultProps = {
         ...ScrollView.defaultProps,
         scrollEnabled: true,
@@ -48,11 +47,19 @@ const SearchBar = ({ searchText, onSearchChange }) => {
       }).start();
     }
   };
-  const handleFocus = () => {
-    router.push({
-      pathname: '/search',
-      params: { initialSearch: searchText }
-    });
+  const handleChangeText = (text) => {
+    onSearchChange(text);
+    if (text.length > 0 && !hasUserInteracted) {
+      setHasUserInteracted(true);
+      router.push({
+        pathname: '/search',
+        params: { initialSearch: text }
+      });
+    }
+  };
+
+  const handleFocus = () => { 
+    searchInputRef.current?.focus();
   };
   return (
     <>
@@ -64,15 +71,17 @@ const SearchBar = ({ searchText, onSearchChange }) => {
             resizeMode="contain"
           />
           <TextInput
+            ref={searchInputRef}
             style={styles.input}
             placeholder="Search..."
             placeholderTextColor={colors.grey3}
             value={searchText}
-            onChangeText={onSearchChange}
+            onChangeText={handleChangeText}
             returnKeyType="search"
             clearButtonMode="while-editing" 
             onFocus={handleFocus}
-            showSoftInputOnFocus
+            // showSoftInputOnFocus={false}
+            autoFocus={false}
           />
         </View>
         <TouchableOpacity 

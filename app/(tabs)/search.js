@@ -14,80 +14,65 @@ export default function SearchScreen() {
   const [error, setError] = useState(null);
 
 
-  useEffect(() => {
-  const fetchRandomRecipes = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const API_URL = 'https://dummyjson.com/recipes/random?number=5';
-      const response = await fetch(API_URL);
-      
-      // First check if response is HTML
-      const responseText = await response.text();
-      if (responseText.startsWith("<")) {
-        throw new Error("Server returned HTML (likely an error page)");
-      }
-      
-      // Now safely parse as JSON
-      const data = JSON.parse(responseText);
-      
-      if (!data.recipes) {
-        throw new Error("Unexpected API response format");
-      }
-      
-      setRandomRecipes(data.recipes);
-      
-    } catch (err) {
-      console.error('API Error:', err.message);
-      setError('Failed to load recipes. Please check your connection.');
-      setRandomRecipes([]); // Fallback to empty array
-      
-      // For debugging - remove in production
-      if (err.message.includes("HTML")) {
-        console.warn("HTML Response:", err.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+      const fetchRandomRecipes = async () => {
+        try {
+          setLoading(true);
+          setError(null);
+          
+          const response = await fetch('https://dummyjson.com/recipes');
+          
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          
+          const data = await response.json();
+          
+          const recommendedRecipes = data.recipes.slice(5, 10);
+          setRandomRecipes(recommendedRecipes);
+          
+        } catch (err) {
+          console.error('Error fetching recipes:', err);
+          setError('Failed to load recommendations. Please try again later.');
+        } finally {
+          setLoading(false);
+        }
+      };
 
-  fetchRandomRecipes();
-}, []);
+      fetchRandomRecipes();
+    }, []); 
 
-
-  useEffect(() => {
-  const fetchRandomRecipes = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-
-      const response = await fetch('https://dummyjson.com/recipes/');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    useEffect(() => {
+    const searchRecipes = async () => {
+      if (searchQuery.trim().length === 0) {
+        setResults([]);
+        return;
       }
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Response is not JSON');
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch(`https://dummyjson.com/recipes/search?q=${searchQuery}`);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        setResults(data.recipes || []);
+        
+      } catch (err) {
+        console.error('Search error:', err);
+        setError('Failed to search recipes. Please try again.');
+        setResults([]);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await response.json();
-      setRandomRecipes(data.recipes || []);
-      
-    } catch (err) {
-      console.error('Error fetching random recipes:', err);
-      setError('Failed to load recommendations. Please try again later.');
-      setRandomRecipes([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const timer = setTimeout(() => {
+      searchRecipes();
+    }, 500);
 
-  fetchRandomRecipes();
-}, [searchQuery]);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   return (
     <View style={styles.container}>
@@ -103,7 +88,7 @@ export default function SearchScreen() {
           placeholderTextColor={Colors.grey3}
           value={searchQuery}
           onChangeText={setSearchQuery}
-          autoFocus={true}
+          autoFocus={false}
           returnKeyType="search"
         />
         <TouchableOpacity onPress={() => router.back()}>
@@ -134,15 +119,12 @@ export default function SearchScreen() {
             ))}
           </View>
           
-          {/* Only show recommendations if we have data */}
           {randomRecipes && randomRecipes.length > 0 && (
             <View style={styles.suggestionsContainer}>
               <Text style={styles.sectionTitle}>Recommended Recipes</Text>
               <FlatList
-                horizontal = {false}
-                showsHorizontalScrollIndicator={false}
                 data={randomRecipes}
-                keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => (
                   <TouchableOpacity 
                     style={styles.recipeCard}
@@ -153,50 +135,42 @@ export default function SearchScreen() {
                       style={styles.recipeImage}
                       resizeMode="cover"
                     />
-                    <Text style={styles.recipeTitle} numberOfLines={1}>{item.title}</Text>
+                    <Text style={styles.recipeTitle} numberOfLines={1}>{item.name}</Text>
                   </TouchableOpacity>
                 )}
-                contentContainerStyle={styles.horizontalList}
               />
             </View>
           )}
         </>
       ) : (
         <>
-          <View style={styles.suggestionsContainer}>
-            <Text style={styles.sectionTitle}>Suggestions</Text>
-            {suggestions.map((item, index) => (
-              <TouchableOpacity 
-                key={index} 
-                style={styles.suggestionItem}
-                onPress={() => setSearchQuery(item)}
-              >
-                <Text style={styles.suggestionText}>{item}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {/* Only show results if we have data */}
-          {results && results.length > 0 ? (
+          {results.length > 0 ? (
             <FlatList
               data={results}
-              keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity 
                   style={styles.resultItem}
                   onPress={() => router.push(`/recipe/${item.id}`)}
                 >
-                  <Text style={styles.resultTitle}>{item.title}</Text>
-                  <Text style={styles.resultDetails}>
-                    {item.rating} ★ | {item.cookTime}
-                  </Text>
+                  <Image
+                    source={{ uri: item.image }}
+                    style={{ width:'100%', height: '100', borderRadius: 8, marginRight: 10, marginBottom: 10 }}
+                    resizeMode="cover"
+                  />
+                  <View>
+                    <Text style={styles.resultTitle}>{item.name}</Text>
+                    <Text style={styles.resultDetails}>
+                      {item.rating} ★ | {item.prepTimeMinutes + item.cookTimeMinutes} mins
+                    </Text>
+                  </View>
                 </TouchableOpacity>
               )}
-              ListHeaderComponent={<Text style={styles.sectionTitle}>Results</Text>}
+              ListHeaderComponent={<Text style={styles.sectionTitle}>Search Results</Text>}
             />
           ) : (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No results found</Text>
+              <Text style={styles.emptyText}>No recipes found for {searchQuery}</Text>
             </View>
           )}
         </>
@@ -268,13 +242,13 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.grey2,
   },
   resultTitle: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '700',
     color: Colors.black,
     marginBottom: 5,
   },
   resultDetails: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.grey3,
   },
   horizontalList: {
@@ -287,7 +261,7 @@ const styles = StyleSheet.create({
   },
   recipeImage: {
     width: '100%',
-    height: '150',
+    height: 'auto',
     borderRadius: 8,
     marginBottom: 8,
   },

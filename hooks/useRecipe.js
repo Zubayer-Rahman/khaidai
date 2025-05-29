@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useRecipes = (limit = 0) => {
+const useRecipes = (limit = 30) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
