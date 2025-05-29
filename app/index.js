@@ -8,7 +8,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       router.replace('/LogIn'); 
-    }, 300);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -25,14 +25,18 @@ const SplashScreen = () => {
             <Image source={require('../assets/images/chef-hat-icon.svg')} style={{marginBottom: 20, marginTop: 100 }}></Image>
             <Text style={styles.premiumText}>100K+ Premium Recipe</Text>
             <View style={{paddingTop:50, paddingBottom: 50, alignItems: 'center'}}>
-              <Text style={styles.cookingText}>KhaoDao</Text>
+              <Text style={styles.cookingText}>Khao :Dai</Text>
               <Text style={styles.subtitle}>Simple way to find Tasty Recipe</Text>
             </View>
             <Link href='/LogIn'>
                 <TouchableOpacity style={styles.button} >
-                  <Text style={styles.buttonText}>{' '}
-                      Start Cooking
-                  </Text>
+                  <View style={styles.buttonText}>
+                      <Text style = {{
+                        color: colors.white,
+                        fontWeight: 600,
+                        fontSize: 18
+                      }}>Start Cooking</Text>
+                  </View>
                 </TouchableOpacity>
             </Link>
           </View>
