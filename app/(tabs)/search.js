@@ -211,8 +211,11 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     marginLeft: 10,
-    color: Colors.primary100,
+    color: Colors.white,
     fontSize: 16,
+    backgroundColor: Colors.primary100,
+    padding: 10,
+    borderRadius: 8
   },
   loadingContainer: {
     flex: 1,
