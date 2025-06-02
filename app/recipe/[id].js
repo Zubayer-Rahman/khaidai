@@ -1,449 +1,225 @@
-import { useAuth, useUser } from '@clerk/clerk-expo';
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import { useRef, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Animated,
-  Dimensions,
   Image,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Colors from '../../constants/Colors';
 
-const { width } = Dimensions.get('window');
-
-const Profile = () => {
-  const { signOut, isLoaded } = useAuth();
-  const { user } = useUser();
+export default function RecipeDetail() {
+  const { id } = useLocalSearchParams();
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('ingredients');
   const router = useRouter();
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState('myRecipes');
-  
-  const menuAnim = useRef(new Animated.Value(-width)).current;
-  const tabAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const response = await fetch(`https://dummyjson.com/recipes/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recipe');
+        }
+        const data = await response.json();
+        setRecipe(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [id]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    const position = ['myRecipes', 'videos', 'saved'].indexOf(tab) * (width / 3);
-    Animated.spring(tabAnim, {
-      toValue: position,
+    Animated.spring(slideAnim, {
+      toValue: tab === 'ingredients' ? 0 : 1,
       useNativeDriver: true,
     }).start();
   };
-  
-  const tabIndicatorPosition = tabAnim.interpolate({
-    inputRange: [0, width / 3, (width / 3) * 2],
-    outputRange: [0, width / 3, (width / 3) * 2],
-  });
 
-  const toggleMenu = () => {
-    Animated.timing(menuAnim, {
-      toValue: menuVisible ? -width : 0,
-      duration: 300,
-      useNativeDriver: true
-    }).start();
-    setMenuVisible(!menuVisible);
-  };
-
-  const handleLogout = async () => {
-    if (!isLoaded) return;
-    
-    try {
-      await signOut();
-      router.replace('/LogIn');
-    } catch (err) {
-      Alert.alert('Error', err.message || 'Failed to log out');
-    } finally {
-      toggleMenu();
-    }
-  };
-
-  const menuOptions = [
-    { icon: 'settings', name: 'Settings', action: () => router.push('/Settings') },
-    { icon: 'bookmark', name: 'Saved Recipes', action: () => router.push('/Saved') },
-    { icon: 'credit-card', name: 'Payment Methods', action: () => router.push('/Payment') },
-    { icon: 'help-circle', name: 'Help Center', action: () => router.push('/Help') },
-    { icon: 'log-out', name: 'Log Out', action: handleLogout },
-  ];
-
-  if (!user) {
+  if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary100} />
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
 
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text style={styles.error}>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!recipe) {
+    return (
+      <View style={styles.center}>
+        <Text>Recipe not found</Text>
+      </View>
+    );
+  }
+
+
+  const indicatorPosition = slideAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 180],
+  });
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.profileContainer}>
-        {/* Overlay when menu is open */}
-        {menuVisible && (
-          <TouchableOpacity 
-            style={styles.overlay}
-            activeOpacity={1}
-            onPress={toggleMenu}
-          />
-        )}
-
-        {/* Side Menu */}
-        <Animated.View style={[
-          styles.menuContainer,
-          { transform: [{ translateX: menuAnim }] }
-        ]}>
-          <View style={styles.menuHeader}>
-            <Image
-              source={
-                user.imageUrl 
-                  ? { uri: user.imageUrl } 
-                  : require('../../assets/images/profile-picture.png')
-              }
-              style={styles.menuProfileImage}
-            />
-            <Text style={styles.menuUserName}>
-              {user.firstName || user.username || 'User'}
-            </Text>
-            <Text style={styles.menuUserEmail}>
-              {user.primaryEmailAddress?.emailAddress}
-            </Text>
+    <ScrollView style={styles.container}>
+      <Pressable 
+        style={styles.backButton}
+        onPress={() => router.back()}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+      >
+        <Ionicons name="arrow-back" size={24} color="white" />
+      </Pressable>
+      
+      <Image source={{ uri: recipe.image }} style={styles.image} />
+      
+      <View style={styles.content}>
+        <Text style={styles.title}>{recipe.name}</Text>
+        
+        <View style={styles.metaContainer}>
+          <View style={styles.metaItem}>
+            <Text style={styles.metaLabel}>Prep Time</Text>
+            <Text style={styles.metaValue}>{recipe.prepTimeMinutes} min</Text>
           </View>
-
-          <View style={styles.menuOptions}>
-            {menuOptions.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.menuOption}
-                onPress={option.action}
-              >
-                <Feather 
-                  name={option.icon} 
-                  size={24} 
-                  color={Colors.grey2} 
-                  style={styles.menuIcon}
-                />
-                <Text style={styles.menuOptionText}>{option.name}</Text>
-                <MaterialIcons 
-                  name="keyboard-arrow-right" 
-                  size={24} 
-                  color={Colors.grey3} 
-                />
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Animated.View>
-
-        {/* Main Profile Content */}
-        <View style={styles.mainContent}>
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Profile</Text>
-            <TouchableOpacity 
-              onPress={toggleMenu}
-              hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-            >
-              <Ionicons name="menu" size={28} color={Colors.primary100} />
-            </TouchableOpacity>
-          </View>
-
-          {/* Profile Card */}
-          <View style={styles.profileCard}>
-            <View style={styles.profileTop}>
-              <Image
-                source={
-                  user.imageUrl 
-                    ? { uri: user.imageUrl } 
-                    : require('../../assets/images/profile-picture.png')
-                }
-                style={styles.profileImage}
-              />
-              <View style={styles.profileInfo}>
-                <Text style={styles.userName}>
-                  {user.fullName || user.username || 'No Name'}
-                </Text>
-                <Text style={styles.userProfession}>
-                  {user.publicMetadata?.profession || 'Food Enthusiast'}
-                </Text>
-                <TouchableOpacity 
-                  style={styles.editButton}
-                  onPress={() => router.push('/EditProfile')}
-                >
-                  <Text style={styles.editButtonText}>Edit Profile</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* Stats */}
-            <View style={styles.statsContainer}>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>34</Text>
-                <Text style={styles.statLabel}>Recipes</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>546</Text>
-                <Text style={styles.statLabel}>Followers</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Text style={styles.statNumber}>334</Text>
-                <Text style={styles.statLabel}>Following</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Tabs Section */}
-          <View style={styles.tabContainer}>
-            <Pressable 
-              style={({ pressed }) => [
-                styles.tabButton, 
-                activeTab === 'myRecipes' && styles.activeTab,
-                pressed && styles.pressedTab
-              ]}
-              onPress={() => handleTabChange('myRecipes')}
-            >
-              <Text style={[
-                styles.tabText, 
-                activeTab === 'myRecipes' ? styles.activeTabText : styles.inactiveTabText
-              ]}>
-                My Recipes
-              </Text>
-            </Pressable>
-            
-            <Pressable 
-              style={({ pressed }) => [
-                styles.tabButton, 
-                activeTab === 'videos' && styles.activeTab,
-                pressed && styles.pressedTab
-              ]}
-              onPress={() => handleTabChange('videos')}
-            >
-              <Text style={[
-                styles.tabText, 
-                activeTab === 'videos' ? styles.activeTabText : styles.inactiveTabText
-              ]}>
-                Videos
-              </Text>
-            </Pressable>
-
-            <Pressable 
-              style={({ pressed }) => [
-                styles.tabButton, 
-                activeTab === 'saved' && styles.activeTab,
-                pressed && styles.pressedTab
-              ]}
-              onPress={() => handleTabChange('saved')}
-            >
-              <Text style={[
-                styles.tabText, 
-                activeTab === 'saved' ? styles.activeTabText : styles.inactiveTabText
-              ]}>
-                Saved
-              </Text>
-            </Pressable>
-            
-            <Animated.View 
-              style={[
-                styles.tabIndicator,
-                { 
-                  transform: [{ translateX: tabIndicatorPosition }],
-                  width: `${100/3}%`
-                }
-              ]} 
-            />
-          </View>
-
-          {/* Tab Content */}
-          <View style={styles.tabContent}>
-            {activeTab === 'myRecipes' && (
-              <Text>My Recipes Content</Text>
-            )}
-            {activeTab === 'videos' && (
-              <Text>Videos Content</Text>
-            )}
-            {activeTab === 'saved' && (
-              <Text>Saved Content</Text>
-            )}
+          <View style={styles.metaItem}>
+            <Text style={styles.metaLabel}>Cook Time</Text>
+            <Text style={styles.metaValue}>{recipe.cookTimeMinutes} min</Text>
           </View>
         </View>
+        <View style={styles.metaContainer}>
+          <View style={styles.metaItem}>
+            <Text style={styles.metaLabel}>Servings</Text>
+            <Text style={styles.metaValue}>{recipe.servings}</Text>
+          </View>
+          <View style={styles.metaItem}>
+            <Text style={styles.metaLabel}>Rating</Text>
+            <Text style={styles.metaValue}>{recipe.rating.toFixed(1)} ({recipe.reviewCount})</Text>
+          </View>
+        </View>
+
+        {/* Tab Buttons */}
+        <View style={styles.tabContainer}>
+          <Pressable 
+            style={[styles.tabButton, activeTab === 'ingredients' && styles.activeTab]}
+            onPress={() => handleTabChange('ingredients')}
+          >
+            <Text style={[styles.tabText, activeTab === 'ingredients' && styles.activeTabText]}>
+              Ingredients
+            </Text>
+          </Pressable>
+          
+          <Pressable 
+            style={[styles.tabButton, activeTab === 'instructions' && styles.activeTab]}
+            onPress={() => handleTabChange('instructions')}
+          >
+            <Text style={[styles.tabText, activeTab === 'instructions' && styles.activeTabText]}>
+              Instructions
+            </Text>
+          </Pressable>
+          
+          <Animated.View 
+            style={[
+              styles.tabIndicator,
+              { 
+                transform: [{ translateX: indicatorPosition }],
+                width: '50%' // Half the container width
+              }
+            ]} 
+          />
+        </View>
+
+        {/* Content Area */}
+        <Animated.View style={styles.contentArea}>
+          {activeTab === 'ingredients' ? (
+            <>
+              <Text style={styles.sectionTitle}>Ingredients</Text>
+              {recipe.ingredients.map((ingredient, index) => (
+                <View key={index} style={styles.ingredientItem}>
+                  <Text style={styles.stepNumber}>{index + 1}.</Text>
+                  <Text style={styles.ingredientText}>{ingredient}</Text>
+                </View>
+              ))}
+            </>
+          ) : (
+            <>
+              <Text style={styles.sectionTitle}>Instructions</Text>
+              {recipe.instructions.map((step, index) => (
+                <View key={index} style={styles.instructionItem}>
+                  <Text style={styles.stepNumber}>{index + 1}.</Text>
+                  <Text style={styles.instructionText}>{step}</Text>
+                </View>
+              ))}
+            </>
+          )}
+        </Animated.View>
       </View>
-    </GestureHandlerRootView>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  profileContainer: {
+  container: {
     flex: 1,
-    backgroundColor: Colors.white,
+    backgroundColor: '#fff',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  image: {
+    width: '100%',
+    height: 300,
   },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 5,
-  },
-  menuContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    width: width * 0.85,
-    backgroundColor: Colors.white,
-    zIndex: 10,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 0 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
-  menuHeader: {
-    padding: 30,
-    paddingTop: 50,
-    backgroundColor: Colors.primary20,
-    borderBottomRightRadius: 20,
-  },
-  menuProfileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 3,
-    borderColor: Colors.white,
-    marginBottom: 15,
-  },
-  menuUserName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.black,
-  },
-  menuUserEmail: {
-    fontSize: 14,
-    color: Colors.grey2,
-    marginTop: 5,
-  },
-  menuOptions: {
-    padding: 20,
-  },
-  menuOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.grey4,
-  },
-  menuIcon: {
-    marginRight: 15,
-    width: 24,
-  },
-  menuOptionText: {
-    flex: 1,
-    fontSize: 16,
-    color: Colors.black,
-  },
-  mainContent: {
-    flex: 1,
-    padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  headerTitle: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.black,
+    marginVertical: 10,
   },
-  profileCard: {
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  profileTop: {
+  metaContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    borderWidth: 3,
-    borderColor: Colors.primary100,
-  },
-  profileInfo: {
-    flex: 1,
-    marginLeft: 20,
-    justifyContent: 'center',
-  },
-  userName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.black,
-    marginBottom: 5,
-  },
-  userProfession: {
-    fontSize: 14,
-    color: Colors.grey2,
+    justifyContent: 'space-between',
     marginBottom: 15,
+    gap: 5,
   },
-  editButton: {
-    backgroundColor: Colors.primary20,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    alignSelf: 'flex-start',
+  metaItem: {
+    flex: 1,
+    alignItems: 'left',
+    padding: 5,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5,
+    width: 'auto',
+    height: 'auto',
+    gap: 8
   },
-  editButtonText: {
-    color: Colors.primary100,
+  metaLabel: {
+    fontSize: 16,
+    color: '#666',
+  },
+  metaValue: {
     fontSize: 14,
-    fontWeight: '600',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 15,
-    borderTopWidth: 1,
-    borderTopColor: Colors.grey4,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statNumber: {
-    fontSize: 18,
     fontWeight: 'bold',
-    color: Colors.black,
-    marginBottom: 5,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: Colors.grey2,
   },
   tabContainer: {
     flexDirection: 'row',
     marginVertical: 15,
-    backgroundColor: Colors.grey5,
+    backgroundColor: '#f5f5f5',
     borderRadius: 10,
     height: 50,
     position: 'relative',
-    overflow: 'hidden',
   },
   tabButton: {
     flex: 1,
@@ -455,32 +231,92 @@ const styles = StyleSheet.create({
   activeTab: {
     backgroundColor: 'transparent',
   },
-  pressedTab: {
-    opacity: 0.7,
-  },
   tabText: {
-    fontSize: 14,
+    fontSize: 16,
+    color: Colors.primary100,
     fontWeight: '600',
   },
   activeTabText: {
     color: Colors.white,
   },
-  inactiveTabText: {
-    color: Colors.grey2,
-  },
   tabIndicator: {
     position: 'absolute',
-    height: '100%',
+    height: '90%',
     backgroundColor: Colors.primary100,
+    opacity: 1,
     borderRadius: 10,
-    top: 0,
+    top: 2,
     left: 0,
     zIndex: 1,
   },
-  tabContent: {
+  contentArea: {
+    marginTop: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+    color: '#333',
+  },
+  ingredientItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+    width: '100%',
+    height: 60,
+    backgroundColor: Colors.primary40,
+    borderRadius: 10,
+    padding: 10
+  },
+  bullet: {
+    fontSize: 18,
+    color: '#888',
+    marginRight: 5,
+  },
+  ingredientText: {
+    fontSize: 16,
+    color: Colors.grey,
+  },
+  instructionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    width: '100%',
+    height: 76,
+    backgroundColor: Colors.primary40,
+    borderRadius: 10,
+    padding: 10
+  },
+  stepNumber: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginRight: 10,
+  },
+  instructionText: {
+    fontSize: 16,
+    color: '#333',
     flex: 1,
-    paddingTop: 20,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  error: {
+    color: 'red',
+    fontSize: 16,
+  },
+  content: {
+    padding: 16,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 30,
+    left: 16,
+    zIndex: 10,
+    backgroundColor: Colors.primary60,
+    borderRadius: 20,
+    padding: 8,
   },
 });
-
-export default Profile;
