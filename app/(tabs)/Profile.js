@@ -8,6 +8,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -23,10 +24,28 @@ const Profile = () => {
   const { user } = useUser();
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
-  const slideAnim = useRef(new Animated.Value(-width)).current;
+  const [activeTab, setActiveTab] = useState('myRecipes');
+  
+  // Separate animations for menu and tabs
+  const menuAnim = useRef(new Animated.Value(-width)).current;
+  const tabAnim = useRef(new Animated.Value(0)).current;
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    const position = ['myRecipes', 'videos', 'saved'].indexOf(tab) * (width / 3);
+    Animated.spring(tabAnim, {
+      toValue: position,
+      useNativeDriver: true,
+    }).start();
+  };
+  
+  const tabIndicatorPosition = tabAnim.interpolate({
+    inputRange: [0, width / 3, (width / 3) * 2],
+    outputRange: [0, width / 3, (width / 3) * 2],
+  });
 
   const toggleMenu = () => {
-    Animated.timing(slideAnim, {
+    Animated.timing(menuAnim, {
       toValue: menuVisible ? -width : 0,
       duration: 300,
       useNativeDriver: true
@@ -78,7 +97,7 @@ const Profile = () => {
         {/* Side Menu */}
         <Animated.View style={[
           styles.menuContainer,
-          { transform: [{ translateX: slideAnim }] }
+          { transform: [{ translateX: menuAnim }] }
         ]}>
           <View style={styles.menuHeader}>
             <Image
@@ -126,8 +145,11 @@ const Profile = () => {
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Profile</Text>
-            <TouchableOpacity onPress={toggleMenu}>
-              <Ionicons name="menu" size={28} color={Colors.black} />
+            <TouchableOpacity 
+              onPress={toggleMenu}
+              hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+            >
+              <Ionicons name="menu" size={28} color={Colors.primary100} />
             </TouchableOpacity>
           </View>
 
@@ -175,15 +197,78 @@ const Profile = () => {
             </View>
           </View>
 
-          {/* Content Sections */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>My Recipes</Text>
-            {/* Recipe grid would go here */}
+          {/* Tabs Section */}
+          <View style={styles.tabContainer}>
+            <Pressable 
+              style={({ pressed }) => [
+                styles.tabButton, 
+                activeTab === 'myRecipes' && styles.activeTab,
+                pressed && styles.pressedTab
+              ]}
+              onPress={() => handleTabChange('myRecipes')}
+            >
+              <Text style={[
+                styles.tabText, 
+                activeTab === 'myRecipes' ? styles.activeTabText : styles.inactiveTabText
+              ]}>
+                My Recipes
+              </Text>
+            </Pressable>
+            
+            <Pressable 
+              style={({ pressed }) => [
+                styles.tabButton, 
+                activeTab === 'videos' && styles.activeTab,
+                pressed && styles.pressedTab
+              ]}
+              onPress={() => handleTabChange('videos')}
+            >
+              <Text style={[
+                styles.tabText, 
+                activeTab === 'videos' ? styles.activeTabText : styles.inactiveTabText
+              ]}>
+                Videos
+              </Text>
+            </Pressable>
+
+            <Pressable 
+              style={({ pressed }) => [
+                styles.tabButton, 
+                activeTab === 'saved' && styles.activeTab,
+                pressed && styles.pressedTab
+              ]}
+              onPress={() => handleTabChange('saved')}
+            >
+              <Text style={[
+                styles.tabText, 
+                activeTab === 'saved' ? styles.activeTabText : styles.inactiveTabText
+              ]}>
+                Saved
+              </Text>
+            </Pressable>
+            
+            <Animated.View 
+              style={[
+                styles.tabIndicator,
+                { 
+                  transform: [{ translateX: tabIndicatorPosition }],
+                  width: `${100/3}%`
+                }
+              ]} 
+            />
           </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Saved Collections</Text>
-            {/* Collections would go here */}
+          {/* Tab Content */}
+          <View style={styles.tabContent}>
+            {activeTab === 'myRecipes' && (
+              <Text>My Recipes Content</Text>
+            )}
+            {activeTab === 'videos' && (
+              <Text>Videos Content</Text>
+            )}
+            {activeTab === 'saved' && (
+              <Text>Saved Content</Text>
+            )}
           </View>
         </View>
       </View>
@@ -208,7 +293,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 1,
+    zIndex: 5,
   },
   menuContainer: {
     position: 'absolute',
@@ -217,7 +302,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width * 0.85,
     backgroundColor: Colors.white,
-    zIndex: 2,
+    zIndex: 10,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 2, height: 0 },
@@ -352,14 +437,50 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.grey2,
   },
-  section: {
-    marginBottom: 30,
+  tabContainer: {
+    flexDirection: 'row',
+    marginVertical: 15,
+    backgroundColor: Colors.grey5,
+    borderRadius: 10,
+    height: 50,
+    position: 'relative',
+    overflow: 'hidden',
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.black,
-    marginBottom: 15,
+  tabButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    zIndex: 2,
+  },
+  activeTab: {
+    backgroundColor: 'transparent',
+  },
+  pressedTab: {
+    opacity: 0.7,
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  activeTabText: {
+    color: Colors.white,
+  },
+  inactiveTabText: {
+    color: Colors.grey2,
+  },
+  tabIndicator: {
+    position: 'absolute',
+    height: '100%',
+    backgroundColor: Colors.primary100,
+    borderRadius: 10,
+    top: 0,
+    left: 0,
+    zIndex: 1,
+  },
+  tabContent: {
+    flex: 1,
+    paddingTop: 20,
   },
 });
 
