@@ -40,9 +40,11 @@ const Profile = () => {
   };
   
   const tabIndicatorPosition = tabAnim.interpolate({
-    inputRange: [0, width / 3, (width / 3) * 2],
-    outputRange: [0, width / 3, (width / 3) * 2],
+    inputRange: [0, 140, 290],
+    outputRange: [0, 125, 260],
   });
+
+  console.log(tabIndicatorPosition); //to calculate the integer value of the input and output ranges
 
   const toggleMenu = () => {
     Animated.timing(menuAnim, {
@@ -314,24 +316,24 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: Colors.primary20,
     borderBottomRightRadius: 20,
+    alignItems: 'center'
   },
   menuProfileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 125,
+    height: 125,
+    borderRadius: '50%',
     borderWidth: 3,
     borderColor: Colors.white,
     marginBottom: 15,
   },
   menuUserName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 600,
     color: Colors.black,
   },
   menuUserEmail: {
-    fontSize: 14,
-    color: Colors.grey2,
-    marginTop: 5,
+    fontSize: 11,
+    color: Colors.grey3,
   },
   menuOptions: {
     padding: 20,
@@ -406,15 +408,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   editButton: {
-    backgroundColor: Colors.primary20,
+    backgroundColor: Colors.primary100,
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 20,
     alignSelf: 'flex-start',
   },
   editButtonText: {
-    color: Colors.primary100,
-    fontSize: 14,
+    color: Colors.white,
+    fontSize: 11,
     fontWeight: '600',
   },
   statsContainer: {
@@ -428,8 +430,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: 600,
     color: Colors.black,
     marginBottom: 5,
   },
@@ -440,9 +442,9 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     marginVertical: 15,
-    backgroundColor: Colors.grey5,
+    backgroundColor: Colors.white,
     borderRadius: 10,
-    height: 50,
+    height: 35,
     position: 'relative',
     overflow: 'hidden',
   },
@@ -467,7 +469,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   inactiveTabText: {
-    color: Colors.grey2,
+    color: Colors.primary100,
   },
   tabIndicator: {
     position: 'absolute',
