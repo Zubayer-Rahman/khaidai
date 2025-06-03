@@ -74,14 +74,14 @@ const handleSearchChange = (text) => {
 
                 
                         {/* Featured Recipes Slider */}
-                        <View >
+                        <View>
                             <Text style={styles.sectionTitle}>Featured Recipes</Text>
                             <FlatList
-                                data={recipes}
+                                data={recipes.filter(recipe => recipe.rating > 4.7)}
                                 keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => <RecipeCard recipe={item} />}
                                 contentContainerStyle={styles.list}
-                                horizontal = {true}
+                                horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                             />
                         </View>
@@ -90,11 +90,60 @@ const handleSearchChange = (text) => {
                         <View style={styles.section}>
                             <Text style={styles.sectionTitle}>New Recipe</Text>
                             <FlatList
-                                data={recipes}
+                                data={recipes.filter(recipe => recipe.rating < 4.7)}
                                 keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => <RecipeCard recipe={item} />}
                                 contentContainerStyle={styles.list}
-                                showsVerticalScrollIndicator={false}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Less Cook Time</Text>
+                            <FlatList
+                                data={recipes.filter(recipe => recipe.prepTimeMinutes < 15)}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Italian Cuisins</Text>
+                            <FlatList
+                                data={recipes.filter(recipe => recipe.cuisine === 'Italian')}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Indian Cuisins</Text>
+                            <FlatList
+                                data={recipes.filter(recipe => recipe.cuisine === 'Indian')}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </View>
+
+                        <View style={styles.section}>
+                            <Text style={styles.sectionTitle}>Brazilian Cuisins</Text>
+                            <FlatList
+                                data={recipes.filter(recipe => recipe.cuisine === 'Brazilian')}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => <RecipeCard recipe={item} />}
+                                contentContainerStyle={styles.list}
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
                             />
                         </View>
                     </ScrollView>

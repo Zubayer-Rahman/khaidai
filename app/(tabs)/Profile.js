@@ -151,7 +151,7 @@ const Profile = () => {
               onPress={toggleMenu}
               hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
             >
-              <Ionicons name="menu" size={28} color={Colors.primary100} />
+              <Ionicons name="menu" size={24} color={Colors.black} />
             </TouchableOpacity>
           </View>
 
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    width: width * 0.85,
+    width: width * 0.80,
     backgroundColor: Colors.white,
     zIndex: 10,
     elevation: 5,
@@ -365,16 +365,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: 600,
     color: Colors.black,
   },
   profileCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#F6FAF9',
     borderRadius: 20,
     padding: 20,
     marginBottom: 30,
-    shadowColor: '#000',
+    shadowColor: Colors.grey4,
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.05,
     shadowRadius: 10,

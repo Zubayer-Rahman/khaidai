@@ -1,5 +1,6 @@
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 const RecipeCard = ({ recipe }) => {
   return (
@@ -8,7 +9,7 @@ const RecipeCard = ({ recipe }) => {
         <Image 
           source={{ uri: recipe.image }} 
           style={styles.image}
-          resizeMode="cover"
+          contentFit="cover"
         />
         {/* <Pressable>
           <Ionicons name='bookmark-outline' style={styles.bookmarkIcon}/> 
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    height: 290
   },
   image: {
     width: '100%',
