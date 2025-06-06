@@ -64,30 +64,23 @@ const CreatePostScreen = () => {
     setIsSubmitting(true);
     
     try {
-      // Here you would typically upload images to storage and get URLs
-      // Then create a post object and send it to your backend
       const postData = {
         text: postText,
-        images: images, // In real app, this would be the uploaded image URLs
+        images: images, 
         location,
         taggedUsers,
         createdAt: new Date().toISOString(),
       };
 
-      // Simulate API call
       console.log('Creating post:', postData);
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Reset form
+
       setPostText('');
       setImages([]);
       setLocation('');
       setTaggedUsers([]);
-      
-      // Navigate back or refresh feeds
+
       navigation.goBack();
-      // In a real app, you might want to update your global state or 
-      // trigger a refresh of the home and profile screens here
       
       Alert.alert('Success', 'Your post has been created!');
     } catch (error) {
