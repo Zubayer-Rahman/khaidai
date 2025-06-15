@@ -101,7 +101,7 @@ const CreatePostScreen = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="close" size={28} color="black" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Create Post</Text>
+          <Text style={styles.headerTitle}>What is New?</Text>
           <TouchableOpacity 
             onPress={handleSubmit} 
             disabled={isSubmitting}

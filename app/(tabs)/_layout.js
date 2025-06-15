@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { StyleSheet } from 'react-native';
 import Colors from '../../constants/Colors';
 
 const tabsLayout = () => {
@@ -87,5 +86,3 @@ const tabsLayout = () => {
 };
 
 export default tabsLayout;
-
-const styles = StyleSheet.create({});

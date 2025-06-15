@@ -18,6 +18,7 @@ export default function RecipeDetail() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showOptions, setShowOptions] = useState(false);
   const [activeTab, setActiveTab] = useState('ingredients');
   const router = useRouter();
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -48,6 +49,13 @@ export default function RecipeDetail() {
       useNativeDriver: true,
     }).start();
   };
+
+  const options = [
+    { id: 1, label: 'Share', icon: 'arrow-redo' },
+    { id: 2, label: 'Rate Recipe', icon: 'star' },
+    { id: 3, label: 'Review', icon: 'chatbox-ellipses' },
+    { id: 4, label: 'Save', icon: 'bookmark' },
+  ];
 
   if (loading) {
     return (
@@ -88,6 +96,34 @@ export default function RecipeDetail() {
       >
         <Ionicons name="arrow-back" size={24} color="white" />
       </Pressable>
+      
+      <Pressable 
+        style={styles.ellipsisButton}
+        onPress={() => {
+          setShowOptions(!showOptions)
+        }}
+        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+      >
+        <Ionicons name="ellipsis-horizontal-outline"></Ionicons>
+      </Pressable>
+
+      {showOptions && (
+        <View style={styles.dropdown}>
+          {options.map((option) => (
+            <Pressable
+              key={option.id}
+              style={styles.optionItem}
+              onPress={() => {
+                // console.log(option.label, 'pressed');
+                setShowOptions(false);
+              }}
+            >
+              <Ionicons name={option.icon} size={18} style={styles.optionIcon} />
+              <Text style={styles.optionText}>{option.label}</Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
       
       <Image source={{ uri: recipe.image }} style={styles.image} />
       
@@ -220,6 +256,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 50,
     position: 'relative',
+    overflow: 'hidden',
   },
   tabButton: {
     flex: 1,
@@ -241,12 +278,12 @@ const styles = StyleSheet.create({
   },
   tabIndicator: {
     position: 'absolute',
-    height: '90%',
+    height: '100%',
     backgroundColor: Colors.primary100,
-    opacity: 1,
     borderRadius: 10,
-    top: 2,
+    top: 0,
     left: 0,
+    width: '50%',
     zIndex: 1,
   },
   contentArea: {
@@ -267,11 +304,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary40,
     borderRadius: 10,
     padding: 10
-  },
-  bullet: {
-    fontSize: 18,
-    color: '#888',
-    marginRight: 5,
   },
   ingredientText: {
     fontSize: 16,
@@ -312,11 +344,50 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 30,
+    top: 40,
     left: 16,
-    zIndex: 10,
+    zIndex: 20,
     backgroundColor: Colors.primary60,
     borderRadius: 20,
     padding: 8,
+  },
+  ellipsisButton: {
+    position: 'absolute',
+    top: 40,
+    right: 16,
+    zIndex: 20,
+    backgroundColor: Colors.primary60,
+    borderRadius: 20,
+    padding: 10,
+    tintColor: Colors.white,
+  },
+  dropdown: {
+    position: 'absolute',
+    right: 16,
+    top: 80,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    minWidth: 160,
+    paddingVertical: 8,
+    zIndex: 30,
+  },
+  optionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  optionIcon: {
+    marginRight: 12,
+    color: '#333',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#333',
   },
 });
