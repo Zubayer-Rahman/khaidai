@@ -114,7 +114,7 @@ export default function RecipeDetail() {
               key={option.id}
               style={styles.optionItem}
               onPress={() => {
-                // console.log(option.label, 'pressed');
+                console.log(option.label, 'pressed');
                 setShowOptions(false);
               }}
             >
