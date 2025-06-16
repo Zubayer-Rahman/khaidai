@@ -9,8 +9,8 @@ const recipe = (Recipes) => {
     <Link href="/recipeDetails" asChild>
         <Pressable style={styles.section}>
             <Image style={styles.recipeImage} source={{ uri: recipe.image }}/>
-            <Text style={styles.recipeTitle}>{recipe.name}</Text>
             <View style={styles.recipeFooter}>
+                <Text style={styles.recipeTitle}>{recipe.name}</Text>
                 <Text style={styles.recipeTime}>⏱️ {recipe.prepTimeMinutes} min</Text>
                 <Text style={styles.recipeRating}>⭐ {recipe.rating}</Text>
                 <Pressable>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     recipeImage: {
         width: '100%',
         height: 150,
-        borderRadius: 10,
+        borderRadius: '50%',
         marginBottom: 10,
     },
     recipeTitle: {

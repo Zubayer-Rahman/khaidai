@@ -1,9 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   Pressable,
   ScrollView,
@@ -12,6 +15,7 @@ import {
   View
 } from 'react-native';
 import Colors from '../../constants/Colors';
+// import * as Sharing from 'expo-sharing';
 
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams();
@@ -19,7 +23,14 @@ export default function RecipeDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
+  // const [copyLink, setCopyLink] = useState(false);
   const [activeTab, setActiveTab] = useState('ingredients');
+  const [saved, setSaved] = useState(false);
+  // const [rating, setRating] = useState(0);
+  // const [review, setReview] = useState('');
+  // const [reviewCount, setReviewCount] = useState(0);
+  // const [ratingCount, setRatingCount] = useState(0);
+  // const [reviewText, setReviewText] = useState('');
   const router = useRouter();
   const slideAnim = useRef(new Animated.Value(0)).current;
 
@@ -49,13 +60,6 @@ export default function RecipeDetail() {
       useNativeDriver: true,
     }).start();
   };
-
-  const options = [
-    { id: 1, label: 'Share', icon: 'arrow-redo' },
-    { id: 2, label: 'Rate Recipe', icon: 'star' },
-    { id: 3, label: 'Review', icon: 'chatbox-ellipses' },
-    { id: 4, label: 'Save', icon: 'bookmark' },
-  ];
 
   if (loading) {
     return (
@@ -104,24 +108,83 @@ export default function RecipeDetail() {
         }}
         hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
       >
-        <Ionicons name="ellipsis-horizontal-outline"></Ionicons>
+        <Ionicons name="ellipsis-horizontal-outline" color="white"></Ionicons>
       </Pressable>
 
       {showOptions && (
         <View style={styles.dropdown}>
-          {options.map((option) => (
-            <Pressable
-              key={option.id}
-              style={styles.optionItem}
-              onPress={() => {
-                console.log(option.label, 'pressed');
-                setShowOptions(false);
-              }}
-            >
-              <Ionicons name={option.icon} size={18} style={styles.optionIcon} />
-              <Text style={styles.optionText}>{option.label}</Text>
+          <Pressable 
+            onPress={async () => {
+              console.log('COPIED!');
+              try {
+                await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+                const link = `https://khaidai.com/recipe/${id}`;
+                await Clipboard.setStringAsync(link);
+                
+                Alert.alert('Link Copied!', 'Recipe link copied to clipboard', [
+                  { text: 'OK', style: 'default' }
+                ]);
+                
+                
+              } catch (_error) {
+                Alert.alert('Error', 'Failed to copy link', [
+                  { text: 'OK', style: 'cancel' }
+                ]);
+              }
+            }}
+            style={({ pressed }) => [
+              styles.optionItem,
+              pressed && styles.pressedState
+            ]}
+          >
+            <View style={styles.optionContent}>
+              <Ionicons 
+                name="link" 
+                size={18} 
+                style={styles.optionIcon} 
+              />
+              <Text style={styles.optionText}>Copy Link</Text>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.optionItem}>
+              <Ionicons name={'star'} size={18} style={styles.optionIcon} />
+              <Text style={styles.optionText}>Rate Recipe</Text>
+            </View>
+          </Pressable>
+
+          <Pressable>
+            <View style={styles.optionItem}>
+              <Ionicons name={'chatbox-ellipses'} size={18} style={styles.optionIcon} />
+              <Text style={styles.optionText}>Review</Text>
+            </View>
+          </Pressable>
+          
+          {saved ? (
+            <Pressable onPress={() =>
+              {Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+              setSaved(false)
+              console.log('Unsave Recipe');}
+            }>
+              <View style={styles.optionItem}>
+                <Ionicons name={'bookmark'} size={18} style={styles.optionIcon} />
+                <Text style={styles.optionText}>Unsave</Text>
+              </View>
             </Pressable>
-          ))}
+          ) : (
+            <Pressable onPress={() => 
+                {Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                setSaved(true)
+                console.log('save Recipe');}
+              }>
+              <View style={styles.optionItem}>
+                <Ionicons name={'bookmark-outline'} size={18} style={styles.optionIcon} />
+                <Text style={styles.optionText}>Save</Text>
+              </View>
+            </Pressable>
+          )}
         </View>
       )}
       
@@ -375,6 +438,10 @@ const styles = StyleSheet.create({
     minWidth: 160,
     paddingVertical: 8,
     zIndex: 30,
+  },
+  optionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   optionItem: {
     flexDirection: 'row',
