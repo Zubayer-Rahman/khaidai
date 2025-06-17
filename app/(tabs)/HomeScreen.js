@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 20,
-        fontWeight: '700',
+        fontWeight: '500',
         color: colors.black,
         marginBottom: 15,
     },

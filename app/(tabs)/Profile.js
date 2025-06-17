@@ -87,7 +87,6 @@ const Profile = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.profileContainer}>
-        {/* Overlay when menu is open */}
         {menuVisible && (
           <TouchableOpacity 
             style={styles.overlay}
@@ -373,7 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F6FAF9',
     borderRadius: 20,
     padding: 20,
-    marginBottom: 30,
+    marginBottom: 15,
     shadowColor: Colors.grey4,
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.05,
@@ -482,7 +481,7 @@ const styles = StyleSheet.create({
   },
   tabContent: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 10,
   },
 });
 
