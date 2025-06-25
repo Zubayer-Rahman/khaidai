@@ -7,7 +7,6 @@ import RecipeCard from '../../components/RecipeCard';
 import SearchBar from '../../components/SearchBar';
 import colors from '../../constants/Colors';
 import useRecipes from '../../hooks/useRecipe';
-
 const { width: screenWidth } = Dimensions.get('window');
 
 export default function HomeScreen() {
@@ -25,7 +24,7 @@ const handleSearchChange = (text) => {
             <GestureHandlerRootView>
                 <View style={{ flex: 1 }}>
                     <ScrollView
-                        contentContainerStyle={{paddingBottom: 80}}
+                        contentContainerStyle={{paddingBottom: 10}}
                         showsVerticalScrollIndicator={false}
                         >
                         {/* Header */}
@@ -34,11 +33,20 @@ const handleSearchChange = (text) => {
                                 <Text style={styles.name}>Hello Zubayer</Text>
                                 <Text style={styles.description}>What are you cooking today?</Text>
                             </View>
-                            <Link href="/Profile" asChild>
-                                <Pressable style={styles.profileImageContainer}>
-                                    <Image source={require('../../assets/images/person-icon.svg')} style={styles.profileImage}/>
-                                </Pressable>
-                            </Link>
+                            <View style={styles.iconContainer}>
+                                <Link href="../screens/Notification" asChild>
+                                    <Pressable style={styles.cartIcon}>
+                                        <Image source={require('../../assets/images/notification-icon.png')} 
+                                        style={styles.profileImage}/>
+                                    </Pressable>
+                                </Link>
+                                <Link href="../screens/Cart" asChild>
+                                    <Pressable style={styles.notificationIcon}>
+                                        <Image source={require('../../assets/images/cart.png')} 
+                                        style={styles.profileImage}/>
+                                    </Pressable>
+                                </Link>
+                            </View>
                         </View>
 
                         <SearchBar
@@ -181,17 +189,30 @@ const styles = StyleSheet.create({
         color: colors.grey3,
         marginTop: 5,
     },
-    profileImageContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 10,
-        backgroundColor: colors.lightGold,
+    iconContainer: {
+        flexDirection: 'row',
+        gap: 5,
+    },
+    cartIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: '50%',
+        backgroundColor: '#FF9C00',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    notificationIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: '50%',
+        backgroundColor: colors.primary100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10
+    },
     profileImage: {
-        width: 60,
-        height: 60,
+        width: 20,
+        height: 20,
     },
     searchBarContainer: {
         flexDirection: 'row',

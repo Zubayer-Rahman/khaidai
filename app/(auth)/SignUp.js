@@ -1,5 +1,5 @@
 import { useSignUp } from '@clerk/clerk-expo';
-import { Checkbox } from 'expo-checkbox';
+// import { Checkbox } from 'expo-checkbox';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -170,12 +170,12 @@ export default function SignUp() {
                 />
 
                 <View style={styles.checkboxContainer}>
-                    <Checkbox
+                    {/* <Checkbox
                         value={isSelected}
                         onValueChange={setSelection}
                         style={styles.checkbox}
                         color={isSelected ? colors.primary100 : undefined}
-                    />
+                    /> */}
                     <Text style={styles.label}>
                         Accept Terms and Conditions
                     </Text>

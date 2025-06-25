@@ -15,7 +15,7 @@ const SplashScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground 
-        source={require('../assets/images/splash-screen.svg')} 
+        source={require('../assets/images/timer.png')} 
         style={styles.background}
         resizeMode="cover"
       >

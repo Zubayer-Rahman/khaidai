@@ -4,7 +4,7 @@
     "slug": "khaodai",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/main-icon.png",
+    "icon": "./assets/images/cart.png",
     "scheme": "khaodai",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,10 +13,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/main-icon.png",
+        "foregroundImage": "./assets/images/cart.png",
         "backgroundColor": "#FFBA4D"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.webshot.khaodai"
     },
     "web": {
       "bundler": "metro",
@@ -28,15 +29,22 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/cart.png",
           "imageWidth": 200,
           "resizeMode": "cover",
           "backgroundColor": "#FFBA4D"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a79a8ebd-96f4-4f5c-be84-396653bd2b06"
+      }
     }
   }
 }

@@ -57,11 +57,11 @@ const tabsLayout = () => {
       />
 
       <Tabs.Screen
-        name="Notification"
+        name="Reels"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <Ionicons 
-              name={focused ? 'heart' : 'heart-outline'} 
+              name={focused ? 'film' : 'film-outline'} 
               size={25} 
               color={color}
             />
