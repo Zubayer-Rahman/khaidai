@@ -8,7 +8,7 @@
     "scheme": "khaodai",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
+    "ios": { 
       "supportsTablet": true
     },
     "android": {

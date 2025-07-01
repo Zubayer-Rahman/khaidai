@@ -1,8 +1,9 @@
 import { useSignUp } from '@clerk/clerk-expo';
-// import { Checkbox } from 'expo-checkbox';
+import { Checkbox } from 'expo-checkbox';
 import { Link, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import EmailVerification from '../../components/EmailVerfication';
 import colors from '../../constants/Colors';
 
 export default function SignUp() {
@@ -17,7 +18,7 @@ export default function SignUp() {
     });
     const [isSelected, setSelection] = useState(false);
     const [pendingVerification, setPendingVerification] = useState(false);
-    const [code, setCode] = useState('');
+    // const [code, setCode] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleInputChange = (name, value) => {
@@ -69,14 +70,16 @@ export default function SignUp() {
         }
     };
 
-    const handleVerifyEmail = async () => {
-        if (!isLoaded) return;
+    const handleVerifyEmail = async (success, verificationCode) => {
+        if (!success) {
+            setPendingVerification(false);
+            return;
+        }
 
         setLoading(true);
-
         try {
             const completeSignUp = await signUp.attemptEmailAddressVerification({
-                code,
+                code: verificationCode,
             });
 
             if (completeSignUp.status === 'complete') {
@@ -91,31 +94,26 @@ export default function SignUp() {
         }
     };
 
+    const handleResendCode = async () => {
+        setLoading(true);
+        try {
+            await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+            Alert.alert('Success', 'A new verification code has been sent to your email.');
+        } catch (err) {
+            console.error(JSON.stringify(err, null, 2));
+            Alert.alert('Error', err.errors?.[0]?.message || 'Failed to resend verification code');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (pendingVerification) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Verify Your Email</Text>
-                <Text style={styles.subTitle}>We have sent a verification code to your email</Text>
-                
-                <TextInput
-                    style={styles.input}
-                    value={code}
-                    onChangeText={setCode}
-                    placeholder="Enter verification code"
-                    placeholderTextColor={colors.grey2}
-                    keyboardType="numeric"
-                />
-
-                <Pressable 
-                    style={[styles.button, loading && styles.buttonDisabled]}
-                    onPress={handleVerifyEmail}
-                    disabled={loading}
-                >
-                    <Text style={styles.buttonText}>
-                        {loading ? 'Verifying...' : 'Verify Email'}
-                    </Text>
-                </Pressable>
-            </View>
+            <EmailVerification
+                email={formData.email}
+                onVerificationSuccess={(success, code) => handleVerifyEmail(success, code)}
+                onResendCode={handleResendCode}
+            />
         );
     }
 
@@ -170,12 +168,12 @@ export default function SignUp() {
                 />
 
                 <View style={styles.checkboxContainer}>
-                    {/* <Checkbox
+                    <Checkbox
                         value={isSelected}
                         onValueChange={setSelection}
                         style={styles.checkbox}
                         color={isSelected ? colors.primary100 : undefined}
-                    /> */}
+                    />
                     <Text style={styles.label}>
                         Accept Terms and Conditions
                     </Text>

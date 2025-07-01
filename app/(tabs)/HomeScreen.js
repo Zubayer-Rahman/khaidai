@@ -19,148 +19,148 @@ const handleSearchChange = (text) => {
     setSearchText(text);
 }
 
-    return (
-        <View style={styles.container}>
-            <GestureHandlerRootView>
-                <View style={{ flex: 1 }}>
-                    <ScrollView
-                        contentContainerStyle={{paddingBottom: 10}}
-                        showsVerticalScrollIndicator={false}
+return (
+    <View style={styles.container}>
+        <GestureHandlerRootView>
+            <View style={{ flex: 1 }}>
+                <ScrollView
+                    contentContainerStyle={{paddingBottom: 10}}
+                    showsVerticalScrollIndicator={false}
+                    >
+                    {/* Header */}
+                    <View style={styles.header}>  
+                        <View style={styles.details}>
+                            <Text style={styles.name}>Hello Zubayer</Text>
+                            <Text style={styles.description}>What are you cooking today?</Text>
+                        </View>
+                        <View style={styles.iconContainer}>
+                            <Link href="../screens/Notification" asChild>
+                                <Pressable style={styles.cartIcon}>
+                                    <Image source={require('../../assets/images/notification-icon.png')} 
+                                    style={styles.profileImage}/>
+                                </Pressable>
+                            </Link>
+                            <Link href="../screens/Cart" asChild>
+                                <Pressable style={styles.notificationIcon}>
+                                    <Image source={require('../../assets/images/cart.png')} 
+                                    style={styles.profileImage}/>
+                                </Pressable>
+                            </Link>
+                        </View>
+                    </View>
+
+                    <SearchBar
+                        searchText={searchText}
+                        onSearchChange={handleSearchChange}
+                    /> {/* Search Bar Component*/}
+
+                    {/* Cuisine Options Slider */}
+                    <View style={styles.section}>
+                        <ScrollView 
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={styles.cuisineScrollContainer}
                         >
-                        {/* Header */}
-                        <View style={styles.header}>  
-                            <View style={styles.details}>
-                                <Text style={styles.name}>Hello Zubayer</Text>
-                                <Text style={styles.description}>What are you cooking today?</Text>
-                            </View>
-                            <View style={styles.iconContainer}>
-                                <Link href="../screens/Notification" asChild>
-                                    <Pressable style={styles.cartIcon}>
-                                        <Image source={require('../../assets/images/notification-icon.png')} 
-                                        style={styles.profileImage}/>
-                                    </Pressable>
-                                </Link>
-                                <Link href="../screens/Cart" asChild>
-                                    <Pressable style={styles.notificationIcon}>
-                                        <Image source={require('../../assets/images/cart.png')} 
-                                        style={styles.profileImage}/>
-                                    </Pressable>
-                                </Link>
-                            </View>
-                        </View>
+                            {cuisines.map((cuisine, index) => (
+                                <Pressable 
+                                    key={index} 
+                                    style={[
+                                        styles.cuisineItem,
+                                        index === 0 && styles.activeCuisineItem
+                                    ]}
+                                >
+                                    <Text style={[
+                                        styles.cuisineText,
+                                        index === 0 && styles.activeCuisineText
+                                    ]}>
+                                        {cuisine}
+                                    </Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                    </View>
 
-                        <SearchBar
-                            searchText={searchText}
-                            onSearchChange={handleSearchChange}
-                        /> {/* Search Bar Component*/}
+            
+                    {/* Featured Recipes Slider */}
+                    <View>
+                        <Text style={styles.sectionTitle}>Featured Recipes</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.rating > 4.7)}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
 
-                        {/* Cuisine Options Slider */}
-                        <View style={styles.section}>
-                            <ScrollView 
-                                horizontal
-                                showsHorizontalScrollIndicator={false}
-                                contentContainerStyle={styles.cuisineScrollContainer}
-                            >
-                                {cuisines.map((cuisine, index) => (
-                                    <Pressable 
-                                        key={index} 
-                                        style={[
-                                            styles.cuisineItem,
-                                            index === 0 && styles.activeCuisineItem
-                                        ]}
-                                    >
-                                        <Text style={[
-                                            styles.cuisineText,
-                                            index === 0 && styles.activeCuisineText
-                                        ]}>
-                                            {cuisine}
-                                        </Text>
-                                    </Pressable>
-                                ))}
-                            </ScrollView>
-                        </View>
+                    {/* New Recipes Slider */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>New Recipe</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.rating < 4.7)}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
 
-                
-                        {/* Featured Recipes Slider */}
-                        <View>
-                            <Text style={styles.sectionTitle}>Featured Recipes</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.rating > 4.7)}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Less Cook Time</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.prepTimeMinutes < 15)}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
 
-                        {/* New Recipes Slider */}
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>New Recipe</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.rating < 4.7)}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Italian Cuisins</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.cuisine === 'Italian')}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
 
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Less Cook Time</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.prepTimeMinutes < 15)}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Indian Cuisins</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.cuisine === 'Indian')}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
 
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Italian Cuisins</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.cuisine === 'Italian')}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Brazilian Cuisins</Text>
+                        <FlatList
+                            data={recipes.filter(recipe => recipe.cuisine === 'Brazilian')}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => <RecipeCard recipe={item} />}
+                            contentContainerStyle={styles.list}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
+                </ScrollView>
+            </View>
 
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Indian Cuisins</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.cuisine === 'Indian')}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
-
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Brazilian Cuisins</Text>
-                            <FlatList
-                                data={recipes.filter(recipe => recipe.cuisine === 'Brazilian')}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => <RecipeCard recipe={item} />}
-                                contentContainerStyle={styles.list}
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={false}
-                            />
-                        </View>
-                    </ScrollView>
-                </View>
-
-            </GestureHandlerRootView>
-            {/* <NavBar/> */}
-        </View>
-    );
+        </GestureHandlerRootView>
+        {/* <NavBar/> */}
+    </View>
+);
 }
 
 const styles = StyleSheet.create({
